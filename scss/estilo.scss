@@ -1,0 +1,224 @@
+$primary: #d17386;       
+$secondary: #d19c9d;     
+$bg: #f5e1e3;            
+$dark: #6d3d52;         
+$font-main: sans-serif;  
+
+
+@mixin flex($justify: center, $align: center, $dir: row) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $dir;
+}
+
+@mixin titulo-decorado($color: $primary, $size: 1.8rem) {
+  font-size: $size;
+  color: $color;
+  margin-bottom: 15px;
+  border-bottom: 2px solid $color;
+  padding-bottom: 5px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-main;
+  background: $bg;
+}
+
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 70px 1fr 60px;
+  grid-template-areas:
+    "header header"
+    "sidebar content"
+    "footer footer";
+  height: 100vh;
+}
+
+.header {
+  grid-area: header;
+  background: $primary;
+  color: white;
+  @include flex;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background: $dark;
+  color: white;
+
+  .menu {
+    @include flex(flex-start, flex-start, column);
+    padding: 20px;
+    gap: 12px;
+
+    a {
+      color: white;
+      text-decoration: none;
+      
+    &:hover {
+        color: $primary;
+      }
+    }
+  }
+}
+
+.content {
+  grid-area: content;
+  padding: 20px;
+  overflow-y: auto;
+
+  .topbar {
+    @include flex(space-between);
+    margin-bottom: 20px;
+
+    h2 {
+      @include titulo-decorado($primary, 1.8rem);
+    }
+  }
+
+  .hero {
+    @include flex(flex-start, center, row);
+    gap: 35px;
+    margin-top: 10px;
+    .card {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      width: 320px; 
+      height: 320px; 
+      @include flex;
+
+      .imgcursor {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+    }
+
+    .hero-text {
+      flex: 1;
+
+      h2 {
+       @include titulo-decorado($primary, 1.8rem);
+      }
+
+      p {
+        color: #555;
+      }
+    }
+  }
+
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 250px));
+    gap: 20px;
+    margin-top: 20px;
+
+    .card {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      height: 250px;
+      @include flex;
+
+      .imgcursor {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 6px;
+      }
+    }
+    .card-info {
+      background: $secondary;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      @include flex(center, center, column);
+      text-align: center;
+
+      h3 {
+        color: $dark;
+        margin-bottom: 8px;
+        
+      }
+
+      p {
+        font-size: 0.95rem;
+        color: $bg;
+        
+      }
+    }
+  }
+}
+
+  .form-contacto {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+
+    form {
+      @include flex(center, stretch, column);
+      gap: 15px;
+
+      .form-group {
+        @include flex(center, stretch, column);
+        gap: 5px;
+
+        label {
+          color: $dark;
+          font-weight: bold;
+        }
+
+        input, textarea {
+          padding: 10px;
+          border: 1px solid $secondary;
+          border-radius: 4px;
+          font-family: $font-main;
+          outline: none;
+
+          &:focus {
+            border-color: $primary;
+          }
+        }
+      }
+
+      button {
+        background: $primary;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 1rem;
+      }
+    }
+  }
+.footer {
+  grid-area: footer;
+  background: $primary;
+  color: white;
+  @include flex;
+
+  .footer-left,
+  .footer-right {
+    flex: 1;
+    @include flex;
+  }
+}
