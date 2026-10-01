@@ -1,10 +1,19 @@
-$primary: #d17386;       
-$secondary: #d19c9d;     
-$bg: #f5e1e3;            
-$dark: #6d3d52;         
+// ==========================================
+// 1. VARIABLES DE PALETA Y BREAKPOINTS
+// ==========================================
+$primary: #F6ABC2;       // Rosa claro principal
+$secondary: #C94D70;     // Magenta / Rosa oscuro secundario
+$bg: #FFE7E9;            // Fondo muy claro rosado
+$dark: #354D12;          // Verde oscuro para contraste en modo oscuro
+$accent: #A0C565;        // Verde claro para el menú superior
 $font-main: sans-serif;  
 
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
 
+// ==========================================
+// 2. MIXINS
+// ==========================================
 @mixin flex($justify: center, $align: center, $dir: row) {
   display: flex;
   justify-content: $justify;
@@ -12,7 +21,7 @@ $font-main: sans-serif;
   flex-direction: $dir;
 }
 
-@mixin titulo-decorado($color: $primary, $size: 1.8rem) {
+@mixin titulo-decorado($color: $secondary, $size: 1.8rem) {
   font-size: $size;
   color: $color;
   margin-bottom: 15px;
@@ -20,6 +29,9 @@ $font-main: sans-serif;
   padding-bottom: 5px;
 }
 
+// ==========================================
+// 3. ESTILOS GENERALES Y MODO OSCURO (body.dark)
+// ==========================================
 * {
   margin: 0;
   padding: 0;
@@ -29,73 +41,183 @@ $font-main: sans-serif;
 body {
   font-family: $font-main;
   background: $bg;
-}
+  color: $dark;
+  transition: background 0.3s ease, color 0.3s ease;
 
+  // Se activa cuando el JS hace toggle de la clase "dark" en el body
+  &.dark {
+    background: #141c09;
+    color: #FFE7E9;
 
-.layout {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  grid-template-rows: 70px 1fr 60px;
-  grid-template-areas:
-    "header header"
-    "sidebar content"
-    "footer footer";
-  height: 100vh;
-}
+    .header, .footer {
+      background: $dark !important; 
+      color: #FFE7E9;
 
-.header {
-  grid-area: header;
-  background: $primary;
-  color: white;
-  @include flex;
-}
-
-.sidebar {
-  grid-area: sidebar;
-  background: $dark;
-  color: white;
-
-  .menu {
-    @include flex(flex-start, flex-start, column);
-    padding: 20px;
-    gap: 12px;
-
-    a {
-      color: white;
-      text-decoration: none;
-      
-    &:hover {
-        color: $primary;
+      h1 {
+        color: #FFE7E9;
       }
+
+      .menu a {
+        color: #FFE7E9;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+
+    .content {
+      background: #141c09;
+
+      .hero-text p {
+        color: #FFE7E9;
+      }
+
+      .card, .form-contacto {
+        background: #1c270e;
+        color: #FFE7E9;
+      }
+      
+      .card-info {
+        background: $secondary;
+        h3, p {
+          color: #ffffff;
+        }
+      }
+    }
+
+    .form-contacto {
+      input, textarea {
+        background: #141c09;
+        color: #FFE7E9;
+        border-color: $accent;
+
+        &:focus {
+          border-color: $primary;
+        }
+      }
+    }
+
+    // Estilo para el botón simplificado en modo oscuro
+    #btnTema {
+      background: #FFE7E9;
+      color: #141c09;
     }
   }
 }
 
+// ==========================================
+// 4. LAYOUT PRINCIPAL (GRID)
+// ==========================================
+.layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer";
+  min-height: 100vh;
+}
+
+// ==========================================
+// 5. ESTILOS PARA EL HEADER Y MENÚ SUPERIOR
+// ==========================================
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between; // Separa los elementos a los extremos
+  align-items: center;            // Centra verticalmente
+  background: $accent;            // Verde claro (#A0C565)
+  color: $dark;                   // Verde oscuro para texto (#354D12)
+  padding: 15px 35px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;                // Se adapta si la pantalla es muy justa
+  gap: 15px;
+
+  // Tu nombre / Título
+  h1 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $dark;
+    margin: 0;
+  }
+
+  // El menú de navegación en línea
+  .menu {
+    display: flex;
+    gap: 22px;                    // Espacio elegante entre cada opción
+    align-items: center;
+
+    a {
+      color: $dark;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: color 0.2s ease, transform 0.2s ease;
+
+      &:hover {
+        color: $secondary;        // Color secundario (rosa/magenta) al pasar el mouse
+        transform: translateY(-2px); // Sutil efecto de elevación
+      }
+    }
+  }
+
+  // El botón simplificado de cambio de tema
+  #btnTema {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: $dark;
+    color: #FFE7E9;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s, transform 0.2s;
+
+    &:hover {
+      background: $secondary;
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ==========================================
+// 6. CONTENIDO PRINCIPAL
+// ==========================================
 .content {
   grid-area: content;
   padding: 20px;
-  overflow-y: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 
   .topbar {
     @include flex(space-between);
     margin-bottom: 20px;
 
     h2 {
-      @include titulo-decorado($primary, 1.8rem);
+      @include titulo-decorado($secondary, 1.8rem);
     }
   }
 
   .hero {
-    @include flex(flex-start, center, row);
-    gap: 35px;
+    @include flex(center, center, column);
+    gap: 20px;
     margin-top: 10px;
+
+    @media (min-width: 768px) {
+      @include flex(flex-start, center, row);
+      gap: 35px;
+    }
+
     .card {
-      background: white;
+      background: #ffffff;
       padding: 10px;
       border-radius: 8px;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-      width: 320px; 
-      height: 320px; 
+      box-shadow: 0 3px 6px rgba(53, 77, 18, 0.1);
+      width: 100%;
+      max-width: 320px;
+      height: 320px;
       @include flex;
 
       .imgcursor {
@@ -110,115 +232,31 @@ body {
       flex: 1;
 
       h2 {
-       @include titulo-decorado($primary, 1.8rem);
+        @include titulo-decorado($secondary, 1.8rem);
       }
 
       p {
-        color: #555;
-      }
-    }
-  }
-
-
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 250px));
-    gap: 20px;
-    margin-top: 20px;
-
-    .card {
-      background: white;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-      height: 250px;
-      @include flex;
-
-      .imgcursor {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        border-radius: 6px;
-      }
-    }
-    .card-info {
-      background: $secondary;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-      @include flex(center, center, column);
-      text-align: center;
-
-      h3 {
         color: $dark;
-        margin-bottom: 8px;
-        
-      }
-
-      p {
-        font-size: 0.95rem;
-        color: $bg;
-        
       }
     }
   }
 }
 
-  .form-contacto {
-    background: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: 0 auto;
-
-    form {
-      @include flex(center, stretch, column);
-      gap: 15px;
-
-      .form-group {
-        @include flex(center, stretch, column);
-        gap: 5px;
-
-        label {
-          color: $dark;
-          font-weight: bold;
-        }
-
-        input, textarea {
-          padding: 10px;
-          border: 1px solid $secondary;
-          border-radius: 4px;
-          font-family: $font-main;
-          outline: none;
-
-          &:focus {
-            border-color: $primary;
-          }
-        }
-      }
-
-      button {
-        background: $primary;
-        color: white;
-        border: none;
-        padding: 12px;
-        border-radius: 4px;
-        font-weight: bold;
-        font-size: 1rem;
-      }
-    }
-  }
+// ==========================================
+// 7. FOOTER
+// ==========================================
 .footer {
   grid-area: footer;
-  background: $primary;
-  color: white;
-  @include flex;
+  background: $accent;
+  color: $dark;
+  @include flex(center, center, column);
+  padding: 15px;
+  gap: 10px;
+  font-weight: 500;
 
-  .footer-left,
-  .footer-right {
-    flex: 1;
-    @include flex;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 30px;
   }
 }
