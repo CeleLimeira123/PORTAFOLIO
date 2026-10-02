@@ -1,13 +1,13 @@
-// ==========================================
-// SCRIPT PRINCIPAL - PORTAFOLIO DE CELESTE
-// ==========================================
+
+
+
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    // ------------------------------------------
-    // FUNCIÓN REUTILIZABLE: muestra un mensaje y
-    // pinta el campo en verde (ok) o rojo (error)
-    // ------------------------------------------
+    
+    
+    
+    
     function mostrar(mensaje, campo, ok, texto) {
         mensaje.textContent = texto;
         mensaje.classList.toggle("ok", ok);
@@ -19,19 +19,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // 1. MENÚ HAMBURGUESA
+    
     const hamburger = document.getElementById("hamburger");
     const nav = document.getElementById("nav");
 
     if (hamburger && nav) {
         hamburger.addEventListener("click", function() {
-            // toggle = alternar: si no tiene la clase la agrega, si ya la tiene la quita
+            
             const abierto = nav.classList.toggle("active");
             hamburger.setAttribute("aria-expanded", abierto);
         });
     }
 
-    // 2. MODO OSCURO
+    
     const btnTema = document.getElementById("btnTema");
 
     if (btnTema) {
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 3. BOTÓN VOLVER ARRIBA
+    
     const btnArriba = document.getElementById("btnArriba");
 
     if (btnArriba) {
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 4. FILTRO DE PROYECTOS POR CATEGORÍA
+    
     const botonesFiltro = document.querySelectorAll(".filtros button");
     const itemsFiltro = document.querySelectorAll(".item");
 
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // 5. BÚSQUEDA Y AUTOCOMPLETADO DE HABILIDADES
+    
     const inputBusqueda = document.getElementById("inputBusqueda");
     const listaSugerencias = document.getElementById("sugerencias");
     const tarjetasHabilidades = document.querySelectorAll(".item-habilidad");
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return tarjeta.querySelector("h3").textContent;
         });
 
-        // Muestra solo las tarjetas que contienen el texto
+        
         const filtrar = function(texto) {
             tarjetasHabilidades.forEach(function(tarjeta) {
                 const titulo = tarjeta.querySelector("h3").textContent.toLowerCase();
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
 
-        // Cierra las sugerencias al hacer clic fuera
+        
         document.addEventListener("click", function(e) {
             if (!inputBusqueda.contains(e.target) && !listaSugerencias.contains(e.target)) {
                 listaSugerencias.innerHTML = "";
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 6. MODAL DE EXPERIENCIA
+    
     const modal = document.getElementById("modal");
     const btnCerrar = document.getElementById("btnCerrar");
     const modalTitulo = document.getElementById("modalTitulo");
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (modal && btnCerrar && tarjetasExperiencia.length > 0) {
         tarjetasExperiencia.forEach(function(tarjeta) {
-            // Con teclado: Enter o Espacio abren la tarjeta
+            
             tarjeta.addEventListener("keydown", function(e) {
                 if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
@@ -145,14 +145,14 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.style.display = "none";
         });
 
-        // Cerrar con la tecla Escape
+        
         document.addEventListener("keydown", function(e) {
             if (e.key === "Escape") {
                 modal.style.display = "none";
             }
         });
 
-        // Cerrar haciendo clic fuera de la caja blanca
+        
         modal.addEventListener("click", function(e) {
             if (e.target === modal) {
                 modal.style.display = "none";
@@ -160,8 +160,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 7. VALIDACIÓN DE CAMPOS (contacto y cotizador)
-    // Una sola función para nombre, correo, celular y mensaje
+    
+    
     function validar(idCampo, idMensaje, esValido, textoError, textoOk) {
         const campo = document.getElementById(idCampo);
         const mensaje = document.getElementById(idMensaje);
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "Ingresa un correo válido, por ejemplo correo@gmail.com",
         "Correo válido");
 
-    // Celular de Bolivia: 8 dígitos y empieza con 6 o 7
+    
     validar("telefono", "mensajeTelefono",
         function(v) { return /^[67]\d{7}$/.test(v); },
         "El celular debe tener 8 dígitos y empezar con 6 o 7",
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "El mensaje debe tener al menos 5 caracteres",
         "Mensaje válido");
 
-    // 7b. FORMULARIO DE CONTACTO
+    
     const formContacto = document.getElementById("formContacto");
 
     if (formContacto) {
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         formContacto.addEventListener("reset", function() {
-            // setTimeout espera a que el navegador vacíe los campos
+            
             setTimeout(function() {
                 formContacto.querySelectorAll(".mensaje").forEach(function(m) {
                     m.textContent = "";
@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 8. COTIZADOR
+    
     const formCotizador = document.getElementById("formCotizador");
 
     if (formCotizador) {
@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const boton = document.getElementById("btnCotizar");
 
-        // ---------- VALIDACIONES (solo dicen si está bien o mal) ----------
+        
         function nombreValido() {
             return nombreInput.value.trim().length >= 3;
         }
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return /^[67]\d{7}$/.test(telefonoInput.value);
         }
 
-        // Lista de servicios que el usuario marcó
+        
         function serviciosElegidos() {
             return Array.from(servicios).filter(function(s) { return s.checked; });
         }
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return cantidadInput.value !== "" && Number.isInteger(cantidad) && cantidad >= 1 && cantidad <= 10;
         }
 
-        // ---------- MENSAJES ----------
+        
         function mostrarServicios() {
             const elegidos = serviciosElegidos();
             const nombres = elegidos.map(function(s) { return s.dataset.nombre; });
@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function() {
             mostrar(mensajeCantidad, cantidadInput, cantidadValida(), texto);
         }
 
-        // El botón solo se activa si todo es válido
+        
         function actualizarBoton() {
             const todoOk = nombreValido() && emailValido() && telefonoValido() && serviciosElegidos().length > 0 && cantidadValida();
 
@@ -326,9 +326,9 @@ document.addEventListener("DOMContentLoaded", function() {
             mostrar(mensajeBoton, null, todoOk, todoOk ? "Todo listo, ya puedes enviar" : "Completa todos los campos para continuar");
         }
 
-        // ---------- CÁLCULO ----------
+        
         function calcular() {
-            // Suma el precio de todos los servicios marcados
+            
             let precioProyecto = 0;
 
             serviciosElegidos().forEach(function(s) {
@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let recargo;
             let descuento;
 
-            // Recargo según el plazo
+            
             if (plazo === "urgente") {
                 recargo = 40;
             } else {
@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
-            // Descuento según la cantidad
+            
             if (cantidad >= 5) {
                 descuento = 15;
             } else {
@@ -374,13 +374,13 @@ document.addEventListener("DOMContentLoaded", function() {
             totalResultado.textContent = `Bs ${total.toFixed(2)}`;
         }
 
-        // ---------- EVENTOS (tiempo real) ----------
-        // Los mensajes de nombre, correo y celular los maneja "validar"
+        
+        
         nombreInput.addEventListener("input", actualizarBoton);
         emailInput.addEventListener("input", actualizarBoton);
         telefonoInput.addEventListener("input", actualizarBoton);
 
-        // Cada vez que marcas o desmarcas un servicio
+        
         servicios.forEach(function(s) {
             s.addEventListener("change", function() {
                 mostrarServicios();
@@ -397,15 +397,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
         plazoInput.addEventListener("change", calcular);
 
-        // ---------- SOLICITAR ----------
+        
         boton.addEventListener("click", function() {
             mensajeFinal.textContent = `¡Gracias ${nombreInput.value}! Tu cotización de ${totalResultado.textContent} será enviada a ${emailInput.value} y te llamaremos al ${telefonoInput.value}.`;
             mensajeFinal.className = "exito";
         });
 
-        // ---------- LIMPIAR ----------
+        
         formCotizador.addEventListener("reset", function() {
-            // setTimeout espera a que el navegador vacíe los campos
+            
             setTimeout(function() {
                 document.querySelectorAll(".cotizador .mensaje").forEach(function(m) {
                     m.textContent = "";

@@ -1,26 +1,18 @@
-// ==========================================
-// 1. VARIABLES
-// ==========================================
-$primary: #F6ABC2;       // Rosa claro principal
-$secondary: #C94D70;     // Magenta / Rosa oscuro secundario
-$bg: #FFE7E9;            // Fondo muy claro rosado (también texto en modo oscuro)
-$dark: #354D12;          // Verde oscuro
-$accent: #A0C565;        // Verde claro (header y footer)
-$dark-bg: #141c09;       // Fondo modo oscuro
-$dark-card: #1c270e;     // Tarjetas modo oscuro
+$primary: #F6ABC2;       
+$secondary: #C94D70;     
+$bg: #FFE7E9;            
+$dark: #354D12;          
+$accent: #A0C565;        
+$dark-bg: #141c09;       
+$dark-card: #1c270e;     
 $white: #ffffff;
-$line: #eeeeee;          // Líneas separadoras
-$gray: #edf0f4;          // Gris claro de botones secundarios
+$line: #eeeeee;          
+$gray: #edf0f4;          
 $shadow: 0 3px 6px rgba(53, 77, 18, 0.1);
 $font-main: sans-serif;
-
-// Breakpoints para Mobile First
 $bp-tablet: 768px;
 $bp-desktop: 1024px;
 
-// ==========================================
-// 2. MIXINS
-// ==========================================
 @mixin flex($justify: center, $align: center, $dir: row) {
   display: flex;
   justify-content: $justify;
@@ -36,7 +28,7 @@ $bp-desktop: 1024px;
   padding-bottom: 5px;
 }
 
-// Estilo común de todos los botones (solo cambia de color, sin rebote)
+
 @mixin boton($bg, $color, $hover-bg, $hover-color: $white) {
   border: none;
   cursor: pointer;
@@ -50,37 +42,27 @@ $bp-desktop: 1024px;
     color: $hover-color;
   }
 
-  // Un botón desactivado se ve apagado, para cualquier botón
+  
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 }
-
-// Tamaño pequeño y discreto
 @mixin boton-chico {
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 0.85rem;
 }
-
-// Botón oscuro / claro (el mismo de "Cambiar tema" y "Solicitar cotización")
 @mixin boton-tema {
   @include boton($dark, $bg, $secondary);
   @include boton-chico;
   border-radius: 20px;
 }
-
-// Caja blanca de texto
 @mixin caja($padding: 20px) {
   background: $white;
   padding: $padding;
   border-radius: 8px;
 }
-
-// ==========================================
-// 3. ESTILOS GENERALES (MOBILE FIRST)
-// ==========================================
 * {
   margin: 0;
   padding: 0;
@@ -93,8 +75,6 @@ body {
   color: $dark;
   transition: background 0.3s ease, color 0.3s ease;
 }
-
-// Campos de formulario (contacto, búsqueda y cotizador)
 input[type="text"],
 input[type="number"],
 input[type="email"],
@@ -113,7 +93,7 @@ textarea {
   }
 }
 
-// Estados de validación (una sola vez para toda la web)
+
 input, select, textarea {
   &.error, &.error:focus {
     border-color: red;
@@ -124,7 +104,7 @@ input, select, textarea {
   }
 }
 
-// Foco visible al navegar con teclado
+
 a:focus-visible,
 button:focus-visible,
 select:focus-visible,
@@ -134,9 +114,6 @@ textarea:focus-visible,
   outline-offset: 2px;
 }
 
-// ==========================================
-// 4. LAYOUT PRINCIPAL (GRID)
-// ==========================================
 .layout {
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -147,9 +124,6 @@ textarea:focus-visible,
   min-height: 100vh;
 }
 
-// ==========================================
-// 5. HEADER Y FOOTER (comparten estilo)
-// ==========================================
 .header, .footer {
   @include flex(center, center, column);
   background: $accent;
@@ -158,14 +132,12 @@ textarea:focus-visible,
   gap: 10px;
   text-align: center;
 }
-
-// HEADER (móvil: título a la izquierda, botones a la derecha)
 .header {
   grid-area: header;
   flex-direction: row;
   justify-content: space-between;
   text-align: left;
-  position: relative; // El menú se posiciona tomando el header como referencia
+  position: relative; 
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 
   h1 {
@@ -179,7 +151,7 @@ textarea:focus-visible,
     @include boton-tema;
   }
 
-  // BOTÓN HAMBURGUESA (3 rayitas)
+  
   .hamburger {
     order: 3;
     background: none;
@@ -198,15 +170,15 @@ textarea:focus-visible,
     }
   }
 
-  // MENÚ (móvil: desplegable debajo del header)
+  
   .menu {
     position: absolute;
-    top: 100%;            // Justo debajo del header
+    top: 100%;            
     left: 0;
     width: 100%;
-    z-index: 100;         // Queda por encima del contenido
-    background: inherit;  // Usa el mismo color del header (claro u oscuro)
-    display: none;        // Oculto al inicio
+    z-index: 100;         
+    background: inherit;  
+    display: none;        
 
     ul {
       list-style: none;
@@ -229,7 +201,7 @@ textarea:focus-visible,
       }
     }
 
-    // Clase que activa JavaScript
+    
     &.active {
       display: block;
     }
@@ -242,9 +214,6 @@ textarea:focus-visible,
   font-weight: 500;
 }
 
-// ==========================================
-// 6. CONTENIDO PRINCIPAL
-// ==========================================
 .content {
   grid-area: content;
   padding: 15px;
@@ -256,7 +225,7 @@ textarea:focus-visible,
     margin-bottom: 15px;
   }
 
-  // Mismo título decorado para ambos
+  
   .topbar h2, .hero-text h2 {
     @include titulo-decorado();
   }
@@ -282,7 +251,7 @@ textarea:focus-visible,
     }
   }
 
-  // Tarjeta de foto (sirve para hero y para .cards)
+  
   .card {
     background: $white;
     border: 3px solid $primary;
@@ -298,11 +267,11 @@ textarea:focus-visible,
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover; // Recorta la foto sin deformarla
+      object-fit: cover; 
     }
   }
 
-  // Cuadrícula adaptable (fotos, info y proyectos)
+  
   .cards, .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -315,14 +284,14 @@ textarea:focus-visible,
   }
 }
 
-// ==========================================
-// 7. CAJAS DE TEXTO Y FILTROS
-// ==========================================
+
+
+
 .card-info, .item-experiencia, .resumen {
   @include caja;
 }
 
-// Cajas con borde magenta a la izquierda
+
 .card-info, .resumen {
   border-left: 5px solid $secondary;
   box-shadow: $shadow;
@@ -343,7 +312,7 @@ textarea:focus-visible,
   }
 }
 
-// Tarjetas de experiencia (clickeables, sin animaciones)
+
 .item-experiencia {
   cursor: pointer;
   border: 1px solid $dark;
@@ -365,17 +334,17 @@ textarea:focus-visible,
   }
 }
 
-// Clase usada por el script de filtrado
+
 .oculto {
   display: none !important;
 }
 
-// ==========================================
-// 8. BOTÓN VOLVER ARRIBA
-// ==========================================
+
+
+
 #btnArriba {
   @include boton($secondary, $white, $dark);
-  display: none; // Controlado por JavaScript
+  display: none; 
   position: fixed;
   bottom: 25px;
   right: 25px;
@@ -389,11 +358,11 @@ textarea:focus-visible,
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-// ==========================================
-// 9. VENTANA MODAL
-// ==========================================
+
+
+
 .modal {
-  display: none; // JS lo cambia a "flex"
+  display: none; 
   position: fixed;
   top: 0;
   left: 0;
@@ -430,7 +399,6 @@ textarea:focus-visible,
   }
 }
 
-// Sugerencias de la búsqueda de habilidades
 #sugerencias li {
   list-style: none;
   padding: 10px;
@@ -439,9 +407,6 @@ textarea:focus-visible,
   border-bottom: 1px solid $line;
 }
 
-// ==========================================
-// 10. COTIZADOR Y CONTACTO
-// ==========================================
 .cotizador {
   max-width: 600px;
   margin: 0 auto;
@@ -449,14 +414,14 @@ textarea:focus-visible,
   .campo {
     margin-bottom: 15px;
 
-    // Etiquetas con letra normal
+    
     label, .etiqueta {
       display: block;
       font-weight: normal;
       margin-bottom: 5px;
     }
 
-    // Los campos de texto ocupan todo el ancho (las casillas no)
+    
     input:not([type="checkbox"]), select, textarea {
       width: 100%;
     }
@@ -465,7 +430,7 @@ textarea:focus-visible,
       resize: vertical;
     }
 
-    // Servicios: botones que se marcan y desmarcan (varios a la vez)
+    
     .servicios {
       display: flex;
       flex-wrap: wrap;
@@ -477,7 +442,7 @@ textarea:focus-visible,
       margin: 0;
       cursor: pointer;
 
-      // La casilla queda escondida: el clic lo recibe la etiqueta
+      
       input {
         position: absolute;
         opacity: 0;
@@ -497,14 +462,14 @@ textarea:focus-visible,
         border-color: $secondary;
       }
 
-      // Servicio marcado
+      
       input:checked + span {
         background: $secondary;
         border-color: $secondary;
         color: $white;
       }
 
-      // Se ve el foco al navegar con el teclado
+      
       input:focus-visible + span {
         outline: 2px solid $dark;
       }
@@ -544,7 +509,7 @@ textarea:focus-visible,
     color: $secondary;
   }
 
-  // Contenedor de los dos botones
+  
   .botones {
     display: flex;
     flex-wrap: wrap;
@@ -552,7 +517,7 @@ textarea:focus-visible,
     gap: 10px;
     margin-bottom: 10px;
 
-    // Mismo tamaño pequeño para los dos (padding, letra y bordes de 6px)
+    
     button {
       @include boton-chico;
       flex: none;
@@ -561,7 +526,7 @@ textarea:focus-visible,
     }
   }
 
-  // Colores: solo cambia el color, el tamaño ya viene de arriba
+  
   #btnCotizar, #btnEnviar {
     @include boton($dark, $bg, $secondary);
   }
@@ -579,11 +544,11 @@ textarea:focus-visible,
   }
 }
 
-// ==========================================
-// 11. BREAKPOINTS
-// ==========================================
 
-// TABLET (≥ 768px)
+
+
+
+
 @media (min-width: $bp-tablet) {
   .header, .footer {
     flex-direction: row;
@@ -597,10 +562,10 @@ textarea:focus-visible,
       font-size: 1.1rem;
     }
 
-    // El menú ya no se despliega: se muestra dentro del header
+    
     .menu {
       order: 2;
-      position: static;  // Valor por defecto, vuelve al flujo normal
+      position: static;  
       display: block;
       width: auto;
       background: none;
@@ -617,7 +582,7 @@ textarea:focus-visible,
     }
 
     .hamburger {
-      display: none; // Se esconde la hamburguesa
+      display: none; 
     }
   }
 
@@ -635,7 +600,7 @@ textarea:focus-visible,
   }
 }
 
-// DESKTOP (≥ 1024px)
+
 @media (min-width: $bp-desktop) {
   .header {
     padding: 20px 50px;
@@ -659,9 +624,9 @@ textarea:focus-visible,
   }
 }
 
-// ==========================================
-// 12. MODO OSCURO (todo en un solo lugar)
-// ==========================================
+
+
+
 body.dark {
   background: $dark-bg;
   color: $bg;
@@ -683,7 +648,7 @@ body.dark {
     }
   }
 
-  // Botón oscuro / claro: se invierte en modo oscuro
+  
   #btnTema, #btnCotizar, #btnEnviar {
     background: $bg;
     color: $dark-bg;
@@ -694,13 +659,13 @@ body.dark {
     }
   }
 
-  // Campos de formulario
+  
   input, select, textarea {
     background: $dark-card;
     color: $bg;
   }
 
-  // Cajas y tarjetas
+  
   .card, .resumen, .item-experiencia, #sugerencias li {
     background: $dark-card;
     color: $bg;
@@ -732,7 +697,7 @@ body.dark {
     border-bottom-color: $dark;
   }
 
-  // Botones secundarios (filtros y limpiar) comparten el mismo estilo oscuro
+  
   .filtros button, .btn-limpiar {
     background: $dark-card;
     color: $bg;
@@ -744,12 +709,12 @@ body.dark {
     }
   }
 
-  // Foco visible en modo oscuro
+  
   :focus-visible {
     outline-color: $primary;
   }
 
-  // Servicios sin marcar en modo oscuro (los marcados siguen magenta)
+  
   .campo .servicio-item input:not(:checked) + span {
     background: $dark-card;
     color: $bg;
