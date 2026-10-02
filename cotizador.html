@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cotizador | Celeste Limeira</title>
+  <meta name="description" content="Cotiza servicios de página web, diseño de logo, chatbot y mantenimiento con el cotizador de Celeste Limeira.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8C%B8</text></svg>">
   <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -15,11 +17,11 @@
 
       <button id="btnTema">Cambiar tema</button>
 
-      <div class="hamburger" id="hamburger">
+      <button type="button" class="hamburger" id="hamburger" aria-label="Abrir menú" aria-controls="nav" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
 
       <nav class="menu" id="nav">
         <ul>
@@ -45,20 +47,20 @@
         <!-- DATOS DE CONTACTO -->
         <div class="campo">
           <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" placeholder="Ej. María López">
-          <p class="mensaje" id="mensajeNombre"></p>
+          <input type="text" id="nombre" autocomplete="name" placeholder="Ej. María López">
+          <p class="mensaje" id="mensajeNombre" aria-live="polite"></p>
         </div>
 
         <div class="campo">
           <label for="email">Correo (Gmail)</label>
-          <input type="email" id="email" placeholder="correo@gmail.com">
-          <p class="mensaje" id="mensajeEmail"></p>
+          <input type="email" id="email" autocomplete="email" placeholder="correo@gmail.com">
+          <p class="mensaje" id="mensajeEmail" aria-live="polite"></p>
         </div>
 
         <div class="campo">
           <label for="telefono">Número de celular</label>
-          <input type="tel" id="telefono" maxlength="8" placeholder="Ej. 67584400">
-          <p class="mensaje" id="mensajeTelefono"></p>
+          <input type="tel" id="telefono" maxlength="8" inputmode="numeric" autocomplete="tel-national" placeholder="Ej. 67584400">
+          <p class="mensaje" id="mensajeTelefono" aria-live="polite"></p>
         </div>
 
         <!-- SERVICIOS (toca para marcar, puedes elegir varios) -->
@@ -87,13 +89,13 @@
             </label>
           </div>
 
-          <p class="mensaje" id="mensajeServicios"></p>
+          <p class="mensaje" id="mensajeServicios" aria-live="polite"></p>
         </div>
 
         <div class="campo">
           <label for="cantidad">Cantidad de proyectos (1 a 10)</label>
           <input type="number" id="cantidad" min="1" max="10" step="1" placeholder="Ej. 3">
-          <p class="mensaje" id="mensajeCantidad"></p>
+          <p class="mensaje" id="mensajeCantidad" aria-live="polite"></p>
         </div>
 
         <div class="campo">
@@ -135,8 +137,8 @@
           <button type="reset" class="btn-limpiar">Limpiar</button>
         </div>
 
-        <p class="mensaje" id="mensajeBoton">Completa todos los campos para continuar</p>
-        <p id="mensajeFinal"></p>
+        <p class="mensaje" id="mensajeBoton" aria-live="polite">Completa todos los campos para continuar</p>
+        <p id="mensajeFinal" aria-live="polite"></p>
 
       </form>
 
@@ -144,7 +146,7 @@
 
     <footer class="footer">
       <div class="footer-left">
-        <p>© 2026 Celeste Limeira | UCB</p>
+        <p>2026 Celeste Limeira | UCB</p>
       </div>
       <div class="footer-right">
         <p>Gmail: celeste.quispe@ucb.edu.bo</p>
@@ -158,6 +160,6 @@
 
   <button id="btnArriba" aria-label="Volver arriba">⬆</button>
 
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
 </body>
 </html>

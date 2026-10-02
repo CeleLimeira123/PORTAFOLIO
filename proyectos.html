@@ -4,22 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proyectos | Celeste Limeira</title>
+  <meta name="description" content="Proyectos de Celeste Limeira en desarrollo web, lógica algorítmica y diseño de interfaces.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8C%B8</text></svg>">
   <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
 
   <div class="layout">
-    
+
     <header class="header">
       <h1>Celeste Limeira Quispe Sarmiento 🌸</h1>
 
       <button id="btnTema">Cambiar tema</button>
 
-      <div class="hamburger" id="hamburger">
+      <button type="button" class="hamburger" id="hamburger" aria-label="Abrir menú" aria-controls="nav" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
 
       <nav class="menu" id="nav">
         <ul>
@@ -48,15 +50,15 @@
 
       <!-- Botones de Filtro -->
       <div class="filtros">
-        <button data-categoria="todos">Todos</button>
-        <button data-categoria="web">Web</button>
-        <button data-categoria="codigo">Código / C++</button>
+        <button type="button" data-categoria="todos">Todos</button>
+        <button type="button" data-categoria="web">Web</button>
+        <button type="button" data-categoria="codigo">Código / C++</button>
       </div>
 
       <!-- Lista de Proyectos -->
       <section id="projects">
         <div class="cards cards-grid">
-          
+
           <article class="card-info item web">
             <h3>Portafolio Personal</h3>
             <p>Sitio web adaptativo diseñado con Mobile First, utilizando SCSS, Grid y JavaScript puro para el modo oscuro.</p>
@@ -81,19 +83,17 @@
         <p>2026 Celeste Limeira | UCB</p>
       </div>
       <div class="footer-right">
-        <p>gmail: celeste.quispe@ucb.edu.bo</p>
-        <p>github: CeleLimeira123</p>
-        <p>linkedin: Celeste Limeira Quispe Sarmiento</p>
-        <p>celular: +591 67524528</p>
+        <p>Gmail: celeste.quispe@ucb.edu.bo</p>
+        <p>GitHub: CeleLimeira123</p>
+        <p>LinkedIn: Celeste Limeira Quispe Sarmiento</p>
+        <p>Celular: +591 67524528</p>
       </div>
     </footer>
 
   </div>
 
-  <!-- Botón Scroll Arriba -->
-  <button id="btnArriba" aria-label="Volver arriba">⬆️</button>
+  <button id="btnArriba" aria-label="Volver arriba">⬆</button>
 
-  <!-- Enlace al JavaScript unificado -->
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
 </body>
 </html>

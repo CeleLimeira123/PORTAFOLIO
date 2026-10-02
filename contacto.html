@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cotizador | Celeste Limeira</title>
+  <title>Contacto | Celeste Limeira</title>
+  <meta name="description" content="Contacta a Celeste Limeira: envía tu nombre, correo, celular y mensaje.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8C%B8</text></svg>">
   <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -15,11 +17,11 @@
 
       <button id="btnTema">Cambiar tema</button>
 
-      <div class="hamburger" id="hamburger">
+      <button type="button" class="hamburger" id="hamburger" aria-label="Abrir menú" aria-controls="nav" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
 
       <nav class="menu" id="nav">
         <ul>
@@ -37,109 +39,42 @@
     <main class="content">
 
       <div class="topbar">
-        <h2>Cotizador</h2>
+        <h2>Contacto</h2>
       </div>
 
-      <form id="formCotizador" class="cotizador" novalidate>
+      <form id="formContacto" class="cotizador" novalidate>
 
-        <!-- DATOS Y OPCIONES -->
-        <section>
-          <div class="campo">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" placeholder="Ej. María López">
-            <p class="mensaje" id="mensajeNombre" aria-live="polite"></p>
-          </div>
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" autocomplete="name" placeholder="Ej. María López">
+          <p class="mensaje" id="mensajeNombre" aria-live="polite"></p>
+        </div>
 
-          <div class="campo">
-            <label for="email">Correo electrónico</label>
-            <input type="text" id="email" placeholder="correo@ejemplo.com">
-            <p class="mensaje" id="mensajeEmail" aria-live="polite"></p>
-          </div>
+        <div class="campo">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" autocomplete="email" placeholder="correo@gmail.com">
+          <p class="mensaje" id="mensajeEmail" aria-live="polite"></p>
+        </div>
 
-          <div class="campo">
-            <label>Servicios (puedes elegir varios)</label>
+        <div class="campo">
+          <label for="telefono">Número de celular</label>
+          <input type="tel" id="telefono" maxlength="8" inputmode="numeric" autocomplete="tel-national" placeholder="Ej. 67584400">
+          <p class="mensaje" id="mensajeTelefono" aria-live="polite"></p>
+        </div>
 
-            <label class="servicio-item">
-              <input type="checkbox" class="servicio" value="800" data-nombre="Página web">
-              <span>Página web</span>
-              <strong>Bs 800</strong>
-            </label>
+        <div class="campo">
+          <label for="mensajeTexto">Mensaje</label>
+          <textarea id="mensajeTexto" rows="5" placeholder="Escribe tu mensaje"></textarea>
+          <p class="mensaje" id="mensajeTextoFeedback" aria-live="polite"></p>
+        </div>
 
-            <label class="servicio-item">
-              <input type="checkbox" class="servicio" value="300" data-nombre="Diseño de logo">
-              <span>Diseño de logo</span>
-              <strong>Bs 300</strong>
-            </label>
+        <div class="botones">
+          <button type="submit" id="btnEnviar" disabled>Enviar mensaje</button>
+          <button type="reset" class="btn-limpiar">Limpiar</button>
+        </div>
 
-            <label class="servicio-item">
-              <input type="checkbox" class="servicio" value="500" data-nombre="Chatbot">
-              <span>Chatbot</span>
-              <strong>Bs 500</strong>
-            </label>
-
-            <label class="servicio-item">
-              <input type="checkbox" class="servicio" value="200" data-nombre="Mantenimiento">
-              <span>Mantenimiento</span>
-              <strong>Bs 200</strong>
-            </label>
-
-            <p class="mensaje" id="mensajeServicios" aria-live="polite"></p>
-          </div>
-
-          <div class="campo">
-            <label for="cantidad">Cantidad de proyectos (1 a 10)</label>
-            <input type="number" id="cantidad" min="1" max="10" step="1" placeholder="Ej. 3">
-            <p class="mensaje" id="mensajeCantidad" aria-live="polite"></p>
-          </div>
-
-          <div class="campo">
-            <label for="plazo">Plazo de entrega</label>
-            <select id="plazo">
-              <option value="normal">Normal (sin recargo)</option>
-              <option value="rapido">Rápido (+20%)</option>
-              <option value="urgente">Urgente (+40%)</option>
-            </select>
-          </div>
-        </section>
-
-        <!-- RESUMEN -->
-        <section>
-          <div class="resumen">
-            <h3>Resumen de la cotización</h3>
-
-            <ul id="listaResumen"></ul>
-
-            <div class="dato">
-              <span>Subtotal</span>
-              <strong id="subtotal">Bs 0.00</strong>
-            </div>
-
-            <div class="dato">
-              <span>Recargo</span>
-              <strong id="recargo">0 % (Bs 0.00)</strong>
-            </div>
-
-            <div class="dato">
-              <span>Descuento</span>
-              <strong id="descuento">0 % (Bs 0.00)</strong>
-            </div>
-
-            <div class="dato total">
-              <span>Total a pagar</span>
-              <strong id="total">Bs 0.00</strong>
-            </div>
-          </div>
-
-          <p class="ayuda">Descuento por cantidad: 3 o 4 proyectos = 10%, 5 o más = 15%.</p>
-
-          <div class="botones">
-            <button type="submit" id="btnCotizar" disabled>Solicitar cotización</button>
-            <button type="reset" class="btn-limpiar">Limpiar</button>
-          </div>
-
-          <p class="mensaje" id="mensajeBoton" aria-live="polite">Completa todos los campos para continuar</p>
-          <p id="resultado" aria-live="polite"></p>
-        </section>
+        <p class="mensaje" id="mensajeBoton" aria-live="polite">Completa todos los campos para continuar</p>
+        <p id="resultado" aria-live="polite"></p>
 
       </form>
 
@@ -147,7 +82,7 @@
 
     <footer class="footer">
       <div class="footer-left">
-        <p> 2026 Celeste Limeira | UCB</p>
+        <p>&copy; 2026 Celeste Limeira | UCB</p>
       </div>
       <div class="footer-right">
         <p>Gmail: celeste.quispe@ucb.edu.bo</p>
@@ -161,6 +96,6 @@
 
   <button id="btnArriba" aria-label="Volver arriba">⬆</button>
 
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
 </body>
 </html>

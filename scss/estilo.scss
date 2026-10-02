@@ -98,6 +98,7 @@ body {
 input[type="text"],
 input[type="number"],
 input[type="email"],
+input[type="tel"],
 select,
 textarea {
   padding: 10px;
@@ -121,6 +122,16 @@ input, select, textarea {
   &.correcto, &.correcto:focus {
     border-color: green;
   }
+}
+
+// Foco visible al navegar con teclado
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 3px solid $secondary;
+  outline-offset: 2px;
 }
 
 // ==========================================
@@ -171,6 +182,9 @@ input, select, textarea {
   // BOTÓN HAMBURGUESA (3 rayitas)
   .hamburger {
     order: 3;
+    background: none;
+    border: none;
+    padding: 0;
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -426,7 +440,7 @@ input, select, textarea {
 }
 
 // ==========================================
-// 10. COTIZADOR
+// 10. COTIZADOR Y CONTACTO
 // ==========================================
 .cotizador {
   max-width: 600px;
@@ -443,8 +457,12 @@ input, select, textarea {
     }
 
     // Los campos de texto ocupan todo el ancho (las casillas no)
-    input:not([type="checkbox"]), select {
+    input:not([type="checkbox"]), select, textarea {
       width: 100%;
+    }
+
+    textarea {
+      resize: vertical;
     }
 
     // Servicios: botones que se marcan y desmarcan (varios a la vez)
@@ -497,6 +515,14 @@ input, select, textarea {
     font-size: 0.85rem;
     min-height: 1.2em;
     margin-top: 4px;
+
+    &.ok {
+      color: #1e7a34;
+    }
+
+    &.mal {
+      color: #b3261e;
+    }
   }
 
   .resumen {
@@ -536,7 +562,7 @@ input, select, textarea {
   }
 
   // Colores: solo cambia el color, el tamaño ya viene de arriba
-  #btnCotizar {
+  #btnCotizar, #btnEnviar {
     @include boton($dark, $bg, $secondary);
   }
 
@@ -658,7 +684,7 @@ body.dark {
   }
 
   // Botón oscuro / claro: se invierte en modo oscuro
-  #btnTema, #btnCotizar {
+  #btnTema, #btnCotizar, #btnEnviar {
     background: $bg;
     color: $dark-bg;
 
@@ -718,6 +744,11 @@ body.dark {
     }
   }
 
+  // Foco visible en modo oscuro
+  :focus-visible {
+    outline-color: $primary;
+  }
+
   // Servicios sin marcar en modo oscuro (los marcados siguen magenta)
   .campo .servicio-item input:not(:checked) + span {
     background: $dark-card;
@@ -731,6 +762,14 @@ body.dark {
 
     .dato.total {
       color: $primary;
+    }
+
+    .mensaje.ok {
+      color: #7dd68f;
+    }
+
+    .mensaje.mal {
+      color: #ff8a80;
     }
 
     .exito {

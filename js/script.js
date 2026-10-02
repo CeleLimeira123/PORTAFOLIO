@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // ------------------------------------------
     function mostrar(mensaje, campo, ok, texto) {
         mensaje.textContent = texto;
-        mensaje.style.color = ok ? "green" : "red";
+        mensaje.classList.toggle("ok", ok);
+        mensaje.classList.toggle("mal", !ok);
 
         if (campo) {
             campo.classList.toggle("correcto", ok);
@@ -24,8 +25,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (hamburger && nav) {
         hamburger.addEventListener("click", function() {
-            nav.classList.toggle("active");
             // toggle = alternar: si no tiene la clase la agrega, si ya la tiene la quita
+            const abierto = nav.classList.toggle("active");
+            hamburger.setAttribute("aria-expanded", abierto);
         });
     }
 
@@ -124,6 +126,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (modal && btnCerrar && tarjetasExperiencia.length > 0) {
         tarjetasExperiencia.forEach(function(tarjeta) {
+            // Con teclado: Enter o Espacio abren la tarjeta
+            tarjeta.addEventListener("keydown", function(e) {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    tarjeta.click();
+                }
+            });
+
             tarjeta.addEventListener("click", function() {
                 modalTitulo.textContent = tarjeta.dataset.titulo;
                 modalTexto.textContent = tarjeta.dataset.detalle;
@@ -133,6 +143,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
         btnCerrar.addEventListener("click", function() {
             modal.style.display = "none";
+        });
+
+        // Cerrar con la tecla Escape
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Escape") {
+                modal.style.display = "none";
+            }
         });
 
         // Cerrar haciendo clic fuera de la caja blanca
@@ -177,6 +194,57 @@ document.addEventListener("DOMContentLoaded", function() {
         function(v) { return v.length >= 5; },
         "El mensaje debe tener al menos 5 caracteres",
         "Mensaje válido");
+
+    // 7b. FORMULARIO DE CONTACTO
+    const formContacto = document.getElementById("formContacto");
+
+    if (formContacto) {
+        const nombreC = document.getElementById("nombre");
+        const emailC = document.getElementById("email");
+        const telefonoC = document.getElementById("telefono");
+        const textoC = document.getElementById("mensajeTexto");
+        const btnEnviar = document.getElementById("btnEnviar");
+        const mensajeBotonC = document.getElementById("mensajeBoton");
+        const resultado = document.getElementById("resultado");
+
+        function contactoValido() {
+            return nombreC.value.trim().length >= 3
+                && emailC.value.includes("@") && emailC.value.includes(".")
+                && /^[67]\d{7}$/.test(telefonoC.value)
+                && textoC.value.length >= 5;
+        }
+
+        function actualizarBotonContacto() {
+            const ok = contactoValido();
+            btnEnviar.disabled = !ok;
+            mostrar(mensajeBotonC, null, ok, ok ? "Todo listo, ya puedes enviar" : "Completa todos los campos para continuar");
+        }
+
+        formContacto.addEventListener("input", actualizarBotonContacto);
+
+        formContacto.addEventListener("submit", function(e) {
+            e.preventDefault();
+            if (!contactoValido()) return;
+            resultado.textContent = `¡Gracias ${nombreC.value}! Tu mensaje fue enviado y te responderé a ${emailC.value}.`;
+            resultado.className = "exito";
+        });
+
+        formContacto.addEventListener("reset", function() {
+            // setTimeout espera a que el navegador vacíe los campos
+            setTimeout(function() {
+                formContacto.querySelectorAll(".mensaje").forEach(function(m) {
+                    m.textContent = "";
+                    m.classList.remove("ok", "mal");
+                });
+                formContacto.querySelectorAll(".error, .correcto").forEach(function(campo) {
+                    campo.classList.remove("error", "correcto");
+                });
+                resultado.textContent = "";
+                resultado.className = "";
+                actualizarBotonContacto();
+            }, 0);
+        });
+    }
 
     // 8. COTIZADOR
     const formCotizador = document.getElementById("formCotizador");
@@ -341,6 +409,7 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(function() {
                 document.querySelectorAll(".cotizador .mensaje").forEach(function(m) {
                     m.textContent = "";
+                    m.classList.remove("ok", "mal");
                 });
                 document.querySelectorAll(".cotizador .error, .cotizador .correcto").forEach(function(campo) {
                     campo.classList.remove("error", "correcto");

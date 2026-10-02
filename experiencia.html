@@ -4,21 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Experiencia | Celeste Limeira</title>
+  <meta name="description" content="Experiencia de Celeste Limeira: docencia universitaria, desarrollo de software y atención al cliente.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8C%B8</text></svg>">
   <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
+
   <div class="layout">
-    
+
     <header class="header">
       <h1>Celeste Limeira Quispe Sarmiento 🌸</h1>
 
       <button id="btnTema">Cambiar tema</button>
 
-      <div class="hamburger" id="hamburger">
+      <button type="button" class="hamburger" id="hamburger" aria-label="Abrir menú" aria-controls="nav" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
 
       <nav class="menu" id="nav">
         <ul>
@@ -46,30 +49,30 @@
       <!-- Tarjetas que actúan como disparadores del modal -->
       <section id="experiencia">
         <div class="cards cards-grid">
-          
-          <article class="card-info item-experiencia" 
-                   data-titulo="Auxiliar de Docencia - Programación 1" 
+
+          <article class="card-info item-experiencia" tabindex="0"
+                   data-titulo="Auxiliar de Docencia - Programación 1"
                    data-detalle="Universidad Católica Boliviana 'San Pablo'. Responsable de guiar a estudiantes en laboratorios de código, resolución de dudas en C++ y revisión de prácticas de lógica algorítmica.">
             <h3>Auxiliar de Docencia - Programación 1</h3>
             <p>Universidad Católica Boliviana "San Pablo"</p>
           </article>
 
-          <article class="card-info item-experiencia" 
-                   data-titulo="Técnico Medio en Programación" 
+          <article class="card-info item-experiencia" tabindex="0"
+                   data-titulo="Técnico Medio en Programación"
                    data-detalle="Formación Técnica Titulada. Adquisición de bases sólidas en desarrollo de software, control de versiones y metodologías estructuradas de programación.">
             <h3>Técnico Medio en Programación</h3>
             <p>Formación Técnica Titulada</p>
           </article>
 
-          <article class="card-info item-experiencia" 
-                   data-titulo="Desarrollo de Software y Proyectos Web" 
+          <article class="card-info item-experiencia" tabindex="0"
+                   data-titulo="Desarrollo de Software y Proyectos Web"
                    data-detalle="Proyectos Académicos Universitarios. Diseño y maquetación de plataformas como merkadoLite, dashboards gerenciales y sistemas backend (API love4ANIMALS, catálogo de vinos).">
             <h3>Desarrollo de Software y Proyectos Web</h3>
             <p>Proyectos Académicos Universitarios</p>
           </article>
 
-          <article class="card-info item-experiencia" 
-                   data-titulo="Atención al Cliente y Gestión Comercial" 
+          <article class="card-info item-experiencia" tabindex="0"
+                   data-titulo="Atención al Cliente y Gestión Comercial"
                    data-detalle="Sector Retail y Comercio. Experiencia en atención al público, resolución de consultas de usuarios, trabajo bajo objetivos y sentido estético en presentación de productos.">
             <h3>Atención al Cliente y Gestión Comercial</h3>
             <p>Sector Retail y Comercio</p>
@@ -84,28 +87,26 @@
         <p>2026 Celeste Limeira | UCB</p>
       </div>
       <div class="footer-right">
-        <p>gmail: celeste.quispe@ucb.edu.bo</p>
-        <p>github: CeleLimeira123</p>
-        <p>linkedin: Celeste Limeira Quispe Sarmiento</p>
-        <p>celular: +591 67524528</p>
+        <p>Gmail: celeste.quispe@ucb.edu.bo</p>
+        <p>GitHub: CeleLimeira123</p>
+        <p>LinkedIn: Celeste Limeira Quispe Sarmiento</p>
+        <p>Celular: +591 67524528</p>
       </div>
     </footer>
 
   </div>
 
-  <!-- Ventana Modal (Idéntica a la de tu ejemplo, oculta por defecto) -->
-  <div id="modal" class="modal">
+  <!-- Ventana Modal (oculta por defecto) -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
     <div class="modal-contenido">
       <h3 id="modalTitulo">Título</h3>
       <p id="modalTexto">Información detallada...</p>
-      <button id="btnCerrar">Cerrar</button>
+      <button type="button" id="btnCerrar">Cerrar</button>
     </div>
   </div>
 
-  <!-- Botón Scroll Arriba -->
   <button id="btnArriba" aria-label="Volver arriba">⬆</button>
 
-  <!-- Enlace al JavaScript -->
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
 </body>
 </html>

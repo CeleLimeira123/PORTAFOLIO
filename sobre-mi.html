@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre Mí | Celeste Limeira</title>
+  <meta name="description" content="Conoce a Celeste Limeira: estudiante de Ingeniería de Sistemas, técnico medio en programación y auxiliar de C++.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8C%B8</text></svg>">
   <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -15,11 +17,11 @@
 
       <button id="btnTema">Cambiar tema</button>
 
-      <div class="hamburger" id="hamburger">
+      <button type="button" class="hamburger" id="hamburger" aria-label="Abrir menú" aria-controls="nav" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
 
       <nav class="menu" id="nav">
         <ul>
@@ -33,8 +35,9 @@
         </ul>
       </nav>
     </header>
+
     <main class="content">
-      
+
       <div class="topbar">
         <h2>Perfil Personal</h2>
       </div>
@@ -48,7 +51,7 @@
           </p>
         </div>
         <div class="card">
-          <img src="img/universidad.jpg" alt="Universidad Católica Boliviana" class="imgcursor">
+          <img src="img/universidad.jpg" alt="Universidad Católica Boliviana" class="imgcursor" width="576" height="324" fetchpriority="high">
         </div>
       </section>
 
@@ -61,7 +64,7 @@
           </p>
         </div>
         <div class="card">
-          <img src="img/tecnico.jpg" alt="Técnico Medio en Programación" class="imgcursor">
+          <img src="img/tecnico.jpg" alt="Técnico Medio en Programación" class="imgcursor" width="640" height="427" loading="lazy">
         </div>
       </section>
 
@@ -72,17 +75,17 @@
         <p>2026 Celeste Limeira | UCB</p>
       </div>
       <div class="footer-right">
-        <p>gmail: celeste.quispe@ucb.edu.bo</p>
-        <p>github: CeleLimeira123</p>
-        <p>linkedin: Celeste Limeira Quispe Sarmiento</p>
-        <p>celular: +591 67524528</p>
+        <p>Gmail: celeste.quispe@ucb.edu.bo</p>
+        <p>GitHub: CeleLimeira123</p>
+        <p>LinkedIn: Celeste Limeira Quispe Sarmiento</p>
+        <p>Celular: +591 67524528</p>
       </div>
     </footer>
 
   </div>
 
   <button id="btnArriba" aria-label="Volver arriba">⬆</button>
-  <!-- Enlace al JavaScript -->
-  <script src="js/script.js"></script>
+
+  <script src="js/script.js" defer></script>
 </body>
 </html>
