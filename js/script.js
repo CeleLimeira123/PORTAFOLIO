@@ -1,321 +1,166 @@
-// ==========================================================
-//  main.js - Funcionalidades UX del portafolio
-//
-//  1. Menú hamburguesa
-//  2. Modo oscuro (se recuerda la elección)
-//  3. Botón "volver arriba"
-//  4. Validación del formulario en tiempo real
-//  5. Modal de detalle de proyectos
-//  6. Filtro de proyectos por categoría
-//
-//  Cada bloque revisa que sus elementos existan en la página,
-//  así una página que no los tiene no genera errores en consola.
-// ==========================================================
+// ==========================================
+// SCRIPT PRINCIPAL - PORTAFOLIO DE CELESTE
+// ==========================================
 
-document.addEventListener('DOMContentLoaded', function () {
-  'use strict';
+document.addEventListener("DOMContentLoaded", function() {
 
-  // Si el usuario pidió "menos movimiento", el scroll no se anima
-  const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // 1. MENÚ HAMBURGUESA
+      
+    const hamburger = document.getElementById("hamburger");
+    const nav = document.getElementById("nav");
 
-
-  // ========================================================
-  // 1. MENÚ HAMBURGUESA
-  // ========================================================
-  const hamburger = document.querySelector('.navbar__toggle');
-  const nav = document.getElementById('menu');
-
-  if (hamburger && nav) {
-    const esTablet = window.matchMedia('(min-width: 768px)');
-
-    function abrirMenu() {
-      nav.classList.add('is-open');
-      hamburger.setAttribute('aria-expanded', 'true');
-      hamburger.setAttribute('aria-label', 'Cerrar menú');
-    }
-
-    function cerrarMenu() {
-      nav.classList.remove('is-open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      hamburger.setAttribute('aria-label', 'Abrir menú');
-    }
-
-    // toggle: si no tiene la clase la agrega, si ya la tiene la quita
-    hamburger.addEventListener('click', function () {
-      if (nav.classList.contains('is-open')) {
-        cerrarMenu();
-      } else {
-        abrirMenu();
-      }
-    });
-
-    // Cerrar al elegir un enlace
-    nav.addEventListener('click', function (e) {
-      if (e.target.closest('a')) cerrarMenu();
-    });
-
-    // Cerrar con Escape
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-        cerrarMenu();
-        hamburger.focus();
-      }
-    });
-
-    // Cerrar al tocar fuera del menú
-    document.addEventListener('click', function (e) {
-      if (!nav.classList.contains('is-open')) return;
-      if (!nav.contains(e.target) && !hamburger.contains(e.target)) cerrarMenu();
-    });
-
-    // Cerrar si la pantalla pasa a tablet/desktop
-    esTablet.addEventListener('change', function (e) {
-      if (e.matches) cerrarMenu();
-    });
-  }
-
-// ========================================================
-// MODO OSCURO SIMPLIFICADO
-// ========================================================
-const btnTema = document.getElementById("btnTema");
-
-if (btnTema) {
-    btnTema.addEventListener("click", function() {
-        // 1. Alterna la clase "dark" en el body (como indicó tu profesor)
-        document.body.classList.toggle("dark");
-        
-        // 2. Cambia el texto del botón según el estado
-        const esOscuro = document.body.classList.contains("dark");
-        btnTema.textContent = esOscuro ? "Modo Claro ☀️" : "Modo Oscuro 🌙";
-    });
-}
-  // ========================================================
-  // 4. VALIDACIÓN DEL FORMULARIO EN TIEMPO REAL
-  // ========================================================
-  const formulario = document.getElementById('formContacto');
-
-  if (formulario) {
-    const inputNombre = document.getElementById('nombre');
-    const inputEmail = document.getElementById('email');
-    const inputMensaje = document.getElementById('mensaje');
-
-    const mensajeNombre = document.getElementById('mensajeNombre');
-    const mensajeEmail = document.getElementById('mensajeEmail');
-    const mensajeMensaje = document.getElementById('mensajeMensaje');
-    const contador = document.getElementById('contadorMensaje');
-    const exito = document.getElementById('formExito');
-
-    const MAX_MENSAJE = 300;
-    const soloLetras = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' -]+$/;
-    const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-    // Muestra el resultado de una validación (borde, texto y color)
-    function mostrarResultado(input, mensaje, esValido, texto) {
-      mensaje.textContent = texto;
-      mensaje.classList.toggle('ok', esValido);
-      mensaje.classList.toggle('error', !esValido);
-      input.classList.toggle('correcto', esValido);
-      input.classList.toggle('error', !esValido);
-      input.setAttribute('aria-invalid', String(!esValido));
-    }
-
-    // Cada función devuelve true si el campo es válido
-    function validarNombre() {
-      const valor = inputNombre.value.trim();
-
-      if (valor.length < 3) {
-        mostrarResultado(inputNombre, mensajeNombre, false, 'El nombre debe tener al menos 3 caracteres');
-        return false;
-      }
-      if (!soloLetras.test(valor)) {
-        mostrarResultado(inputNombre, mensajeNombre, false, 'El nombre solo puede tener letras y espacios');
-        return false;
-      }
-      mostrarResultado(inputNombre, mensajeNombre, true, 'Nombre válido');
-      return true;
-    }
-
-    function validarEmail() {
-      const valor = inputEmail.value.trim();
-
-      if (valor === '') {
-        mostrarResultado(inputEmail, mensajeEmail, false, 'Escribe tu correo electrónico');
-        return false;
-      }
-      if (!formatoEmail.test(valor)) {
-        mostrarResultado(inputEmail, mensajeEmail, false, 'Escribe un correo válido, por ejemplo: tu@correo.com');
-        return false;
-      }
-      mostrarResultado(inputEmail, mensajeEmail, true, 'Correo válido');
-      return true;
-    }
-
-    function validarMensaje() {
-      const valor = inputMensaje.value.trim();
-      contador.textContent = inputMensaje.value.length + ' / ' + MAX_MENSAJE;
-
-      if (valor.length < 10) {
-        mostrarResultado(inputMensaje, mensajeMensaje, false, 'El mensaje debe tener al menos 10 caracteres');
-        return false;
-      }
-      mostrarResultado(inputMensaje, mensajeMensaje, true, 'Mensaje válido');
-      return true;
-    }
-
-    // En tiempo real: se valida mientras el usuario escribe
-    inputNombre.addEventListener('input', validarNombre);
-    inputEmail.addEventListener('input', validarEmail);
-    inputMensaje.addEventListener('input', validarMensaje);
-
-    // También al salir del campo (por si pasó de largo sin escribir)
-    inputNombre.addEventListener('blur', validarNombre);
-    inputEmail.addEventListener('blur', validarEmail);
-    inputMensaje.addEventListener('blur', validarMensaje);
-
-    // Al enviar: se validan todos y se enfoca el primero con error
-    formulario.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      // Se ejecutan los tres (sin cortocircuito) para mostrar todos los errores a la vez
-      const nombreOk = validarNombre();
-      const emailOk = validarEmail();
-      const mensajeOk = validarMensaje();
-
-      if (!nombreOk) {
-        inputNombre.focus();
-      } else if (!emailOk) {
-        inputEmail.focus();
-      } else if (!mensajeOk) {
-        inputMensaje.focus();
-      }
-
-      if (nombreOk && emailOk && mensajeOk) {
-        const primerNombre = inputNombre.value.trim().split(' ')[0];
-        exito.textContent = '¡Gracias, ' + primerNombre + '! Tu mensaje fue validado correctamente.';
-        exito.hidden = false;
-
-        formulario.reset();
-
-        // Limpia los estilos y mensajes de validación
-        [inputNombre, inputEmail, inputMensaje].forEach(function (campo) {
-          campo.classList.remove('correcto', 'error');
-          campo.removeAttribute('aria-invalid');
+    if (hamburger && nav) {
+        hamburger.addEventListener("click", function() {
+            nav.classList.toggle("active");
+            // toggle = alternar: si no tiene la clase la agrega, si ya la tiene la quita
         });
-        [mensajeNombre, mensajeEmail, mensajeMensaje].forEach(function (m) {
-          m.textContent = '';
-          m.classList.remove('ok', 'error');
+    }
+
+    // 2. MODO OSCURO
+    const btnTema = document.getElementById("btnTema");
+
+    if (btnTema) {
+        btnTema.addEventListener("click", function() {
+            document.body.classList.toggle("dark");
         });
-        contador.textContent = '0 / ' + MAX_MENSAJE;
-      } else {
-        exito.hidden = true;
-      }
-    });
-  }
-
-
-  // ========================================================
-  // 5. MODAL DE DETALLE DE PROYECTOS
-  // ========================================================
-  const modal = document.getElementById('modal');
-
-  if (modal) {
-    const btnCerrar = document.getElementById('btnCerrar');
-    const modalTitulo = document.getElementById('modalTitulo');
-    const modalTexto = document.getElementById('modalTexto');
-    const modalCategoria = document.getElementById('modalCategoria');
-    const zonaProyectos = document.getElementById('proyectos');
-
-    const nombresCategoria = { web: 'Web', python: 'Python', datos: 'Datos' };
-    let elementoPrevio = null;   // para devolver el foco al cerrar
-
-    function abrirModal(tarjeta) {
-      elementoPrevio = document.activeElement;
-
-      modalTitulo.textContent = tarjeta.querySelector('h3').textContent;
-      modalTexto.textContent = tarjeta.querySelector('p').textContent;
-      modalCategoria.textContent = nombresCategoria[tarjeta.dataset.categoria] || 'Proyecto';
-
-      modal.classList.add('is-open');
-      document.body.classList.add('modal-open');
-      btnCerrar.focus();
     }
 
-    function cerrarModal() {
-      modal.classList.remove('is-open');
-      document.body.classList.remove('modal-open');
-      if (elementoPrevio) elementoPrevio.focus();
+    // 3. BOTÓN VOLVER ARRIBA
+    const btnArriba = document.getElementById("btnArriba");
+
+    if (btnArriba) {
+        window.addEventListener("scroll", function() {
+            btnArriba.style.display = window.scrollY > 100 ? "flex" : "none";
+        });
+
+        btnArriba.addEventListener("click", function() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
     }
 
-    // Abrir: un solo listener para todos los botones "Ver detalle"
-    zonaProyectos.addEventListener('click', function (e) {
-      const boton = e.target.closest('.btn-detalle');
-      if (boton) abrirModal(boton.closest('.card-info'));
+    // 4. FILTRO DE PROYECTOS POR CATEGORÍA
+    const botonesFiltro = document.querySelectorAll(".filtros button");
+    const itemsFiltro = document.querySelectorAll(".item");
+
+    botonesFiltro.forEach(function(boton) {
+        boton.addEventListener("click", function() {
+            const categoria = boton.dataset.categoria;
+
+            itemsFiltro.forEach(function(item) {
+                const mostrar = categoria === "todos" || item.classList.contains(categoria);
+                item.classList.toggle("oculto", !mostrar);
+            });
+        });
     });
 
-    // Cerrar con la X
-    btnCerrar.addEventListener('click', cerrarModal);
+    // 5. BÚSQUEDA Y AUTOCOMPLETADO DE HABILIDADES
+    const inputBusqueda = document.getElementById("inputBusqueda");
+    const listaSugerencias = document.getElementById("sugerencias");
+    const tarjetasHabilidades = document.querySelectorAll(".item-habilidad");
 
-    // Cerrar al hacer clic en el fondo oscuro (no dentro del cuadro)
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal) cerrarModal();
-    });
+    if (inputBusqueda && listaSugerencias && tarjetasHabilidades.length > 0) {
+        const habilidades = Array.from(tarjetasHabilidades).map(function(tarjeta) {
+            return tarjeta.querySelector("h3").textContent;
+        });
 
-    // Cerrar con Escape y mantener el foco dentro del modal con Tab
-    document.addEventListener('keydown', function (e) {
-      if (!modal.classList.contains('is-open')) return;
+        // Muestra solo las tarjetas que contienen el texto
+        const filtrar = function(texto) {
+            tarjetasHabilidades.forEach(function(tarjeta) {
+                const titulo = tarjeta.querySelector("h3").textContent.toLowerCase();
+                tarjeta.classList.toggle("oculto", !titulo.includes(texto));
+            });
+        };
 
-      if (e.key === 'Escape') {
-        cerrarModal();
-        return;
-      }
+        inputBusqueda.addEventListener("input", function() {
+            const texto = inputBusqueda.value.toLowerCase();
+            listaSugerencias.innerHTML = "";
+            filtrar(texto);
 
-      if (e.key === 'Tab') {
-        const enfocables = modal.querySelectorAll('button, a[href]');
-        const primero = enfocables[0];
-        const ultimo = enfocables[enfocables.length - 1];
+            if (texto === "") return;
 
-        if (e.shiftKey && document.activeElement === primero) {
-          e.preventDefault();
-          ultimo.focus();
-        } else if (!e.shiftKey && document.activeElement === ultimo) {
-          e.preventDefault();
-          primero.focus();
-        }
-      }
-    });
-  }
+            habilidades.forEach(function(habilidad) {
+                if (habilidad.toLowerCase().includes(texto)) {
+                    const li = document.createElement("li");
+                    li.textContent = habilidad;
 
+                    li.addEventListener("click", function() {
+                        inputBusqueda.value = habilidad;
+                        listaSugerencias.innerHTML = "";
+                        filtrar(habilidad.toLowerCase());
+                    });
 
-  // ========================================================
-  // 6. FILTRO DE PROYECTOS POR CATEGORÍA
-  // ========================================================
-  const botonesFiltro = document.querySelectorAll('.filtro');
-  const tarjetas = document.querySelectorAll('#proyectos .card-info');
-  const resultado = document.getElementById('resultadoFiltro');
+                    listaSugerencias.appendChild(li);
+                }
+            });
+        });
 
-  if (botonesFiltro.length > 0 && tarjetas.length > 0) {
-    function aplicarFiltro(categoria) {
-      let visibles = 0;
-
-      tarjetas.forEach(function (tarjeta) {
-        const coincide = categoria === 'todos' || tarjeta.dataset.categoria === categoria;
-        tarjeta.hidden = !coincide;
-        if (coincide) visibles++;
-      });
-
-      botonesFiltro.forEach(function (boton) {
-        boton.setAttribute('aria-pressed', String(boton.dataset.filtro === categoria));
-      });
-
-      if (resultado) {
-        resultado.textContent = 'Mostrando ' + visibles + ' de ' + tarjetas.length + ' proyectos';
-      }
+        // Cierra las sugerencias al hacer clic fuera
+        document.addEventListener("click", function(e) {
+            if (!inputBusqueda.contains(e.target) && !listaSugerencias.contains(e.target)) {
+                listaSugerencias.innerHTML = "";
+            }
+        });
     }
 
-    botonesFiltro.forEach(function (boton) {
-      boton.addEventListener('click', function () {
-        aplicarFiltro(boton.dataset.filtro);
-      });
-    });
-  }
+    // 6. MODAL DE EXPERIENCIA
+    const modal = document.getElementById("modal");
+    const btnCerrar = document.getElementById("btnCerrar");
+    const modalTitulo = document.getElementById("modalTitulo");
+    const modalTexto = document.getElementById("modalTexto");
+    const tarjetasExperiencia = document.querySelectorAll(".item-experiencia");
+
+    if (modal && btnCerrar && tarjetasExperiencia.length > 0) {
+        tarjetasExperiencia.forEach(function(tarjeta) {
+            tarjeta.addEventListener("click", function() {
+                modalTitulo.textContent = tarjeta.dataset.titulo;
+                modalTexto.textContent = tarjeta.dataset.detalle;
+                modal.style.display = "flex";
+            });
+        });
+
+        btnCerrar.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        // Cerrar haciendo clic fuera de la caja blanca
+        modal.addEventListener("click", function(e) {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    }
+
+    // 7. VALIDACIÓN DEL FORMULARIO DE CONTACTO
+    // Una sola función para los tres campos
+    function validar(idCampo, idMensaje, esValido, textoError, textoOk) {
+        const campo = document.getElementById(idCampo);
+        const mensaje = document.getElementById(idMensaje);
+
+        if (!campo || !mensaje) return;
+
+        campo.addEventListener("input", function() {
+            const valido = esValido(campo.value);
+
+            mensaje.textContent = valido ? textoOk : textoError;
+            mensaje.style.color = valido ? "green" : "red";
+            campo.classList.toggle("correcto", valido);
+            campo.classList.toggle("error", !valido);
+        });
+    }
+
+    validar("nombre", "mensajeNombre",
+        function(v) { return v.length >= 3; },
+        "El nombre debe tener al menos 3 caracteres",
+        "Nombre válido");
+
+    validar("email", "mensajeEmail",
+        function(v) { return v.includes("@") && v.includes("."); },
+        "Ingresa un correo electrónico válido",
+        "Correo válido");
+
+    validar("mensajeTexto", "mensajeTextoFeedback",
+        function(v) { return v.length >= 5; },
+        "El mensaje debe tener al menos 5 caracteres",
+        "Mensaje válido");
+
 });
