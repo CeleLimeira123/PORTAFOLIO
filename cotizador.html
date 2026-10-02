@@ -42,70 +42,101 @@
 
       <form id="formCotizador" class="cotizador" novalidate>
 
-        <!-- COLUMNA 1: DATOS Y OPCIONES -->
-        <section>
-          <div class="campo">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" placeholder="Tu nombre">
-            <p class="mensaje" id="mensajeNombre"></p>
-          </div>
+        <!-- DATOS DE CONTACTO -->
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" placeholder="Ej. María López">
+          <p class="mensaje" id="mensajeNombre"></p>
+        </div>
 
-          <div class="campo">
-            <label for="email">Correo electrónico</label>
-            <input type="text" id="email" placeholder="correo@ejemplo.com">
-            <p class="mensaje" id="mensajeEmail"></p>
-          </div>
+        <div class="campo">
+          <label for="email">Correo (Gmail)</label>
+          <input type="email" id="email" placeholder="correo@gmail.com">
+          <p class="mensaje" id="mensajeEmail"></p>
+        </div>
 
-          <div class="campo">
-            <label>Servicios</label>
+        <div class="campo">
+          <label for="telefono">Número de celular</label>
+          <input type="tel" id="telefono" maxlength="8" placeholder="Ej. 67584400">
+          <p class="mensaje" id="mensajeTelefono"></p>
+        </div>
+
+        <!-- SERVICIOS (toca para marcar, puedes elegir varios) -->
+        <div class="campo">
+          <p class="etiqueta">Servicios (puedes elegir varios)</p>
+
+          <div class="servicios">
             <label class="servicio-item">
               <input type="checkbox" class="servicio" value="800" data-nombre="Página web">
-              Página web — Bs 800
+              <span>Página web · Bs 800</span>
             </label>
+
             <label class="servicio-item">
               <input type="checkbox" class="servicio" value="300" data-nombre="Diseño de logo">
-              Diseño de logo — Bs 300
+              <span>Diseño de logo · Bs 300</span>
             </label>
+
             <label class="servicio-item">
               <input type="checkbox" class="servicio" value="500" data-nombre="Chatbot">
-              Chatbot — Bs 500
+              <span>Chatbot · Bs 500</span>
             </label>
+
             <label class="servicio-item">
               <input type="checkbox" class="servicio" value="200" data-nombre="Mantenimiento">
-              Mantenimiento — Bs 200
+              <span>Mantenimiento · Bs 200</span>
             </label>
-            <p class="mensaje" id="mensajeServicios"></p>
           </div>
 
-          <div class="campo">
-            <label for="cantidad">Cantidad de proyectos (1 a 5)</label>
-            <input type="number" id="cantidad" value="1" min="1" max="5">
-            <p class="mensaje" id="mensajeCantidad"></p>
+          <p class="mensaje" id="mensajeServicios"></p>
+        </div>
+
+        <div class="campo">
+          <label for="cantidad">Cantidad de proyectos (1 a 10)</label>
+          <input type="number" id="cantidad" min="1" max="10" step="1" placeholder="Ej. 3">
+          <p class="mensaje" id="mensajeCantidad"></p>
+        </div>
+
+        <div class="campo">
+          <label for="plazo">Plazo de entrega</label>
+          <select id="plazo">
+            <option value="normal">Normal (sin recargo)</option>
+            <option value="rapido">Rápido (+20%)</option>
+            <option value="urgente">Urgente (+40%)</option>
+          </select>
+        </div>
+
+        <!-- RESUMEN -->
+        <div class="resumen">
+          <h3>Resumen</h3>
+
+          <div class="dato">
+            <span>Subtotal</span>
+            <strong id="subtotal">Bs 0.00</strong>
           </div>
 
-          <div class="campo">
-            <label for="urgencia">Plazo de entrega</label>
-            <select id="urgencia">
-              <option value="0">Normal (sin recargo)</option>
-              <option value="0.2">Rápido (+20%)</option>
-              <option value="0.4">Urgente (+40%)</option>
-            </select>
-          </div>
-        </section>
-
-        <!-- COLUMNA 2: RESUMEN -->
-        <section>
-          <div class="resumen">
-            <h3>Resumen</h3>
-            <ul id="listaResumen"></ul>
-            <p>Total estimado:</p>
-            <p class="total" id="total">Bs 0.00</p>
+          <div class="dato">
+            <span>Recargo</span>
+            <strong id="recargo">0 % (Bs 0.00)</strong>
           </div>
 
-          <button type="submit" id="btnCotizar" disabled>Solicitar cotización</button>
-          <p class="mensaje" id="mensajeBoton">Completa todos los campos para continuar</p>
-          <p id="resultado"></p>
-        </section>
+          <div class="dato">
+            <span>Descuento (3-4 proyectos = 10%, 5 o más = 15%)</span>
+            <strong id="descuento">0 % (Bs 0.00)</strong>
+          </div>
+
+          <div class="dato total">
+            <span>Total a pagar</span>
+            <strong id="total">Bs 0.00</strong>
+          </div>
+        </div>
+
+        <div class="botones">
+          <button type="button" id="btnCotizar" disabled>Solicitar cotización</button>
+          <button type="reset" class="btn-limpiar">Limpiar</button>
+        </div>
+
+        <p class="mensaje" id="mensajeBoton">Completa todos los campos para continuar</p>
+        <p id="mensajeFinal"></p>
 
       </form>
 
@@ -113,7 +144,7 @@
 
     <footer class="footer">
       <div class="footer-left">
-        <p>2026 Celeste Limeira | UCB</p>
+        <p>© 2026 Celeste Limeira | UCB</p>
       </div>
       <div class="footer-right">
         <p>Gmail: celeste.quispe@ucb.edu.bo</p>

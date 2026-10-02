@@ -8,6 +8,10 @@ $dark: #354D12;          // Verde oscuro
 $accent: #A0C565;        // Verde claro (header y footer)
 $dark-bg: #141c09;       // Fondo modo oscuro
 $dark-card: #1c270e;     // Tarjetas modo oscuro
+$white: #ffffff;
+$line: #eeeeee;          // Líneas separadoras
+$gray: #edf0f4;          // Gris claro de botones secundarios
+$shadow: 0 3px 6px rgba(53, 77, 18, 0.1);
 $font-main: sans-serif;
 
 // Breakpoints para Mobile First
@@ -33,7 +37,7 @@ $bp-desktop: 1024px;
 }
 
 // Estilo común de todos los botones (solo cambia de color, sin rebote)
-@mixin boton($bg, $color, $hover-bg, $hover-color: #ffffff) {
+@mixin boton($bg, $color, $hover-bg, $hover-color: $white) {
   border: none;
   cursor: pointer;
   font-weight: 600;
@@ -41,10 +45,37 @@ $bp-desktop: 1024px;
   color: $color;
   transition: background 0.2s ease, color 0.2s ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: $hover-bg;
     color: $hover-color;
   }
+
+  // Un botón desactivado se ve apagado, para cualquier botón
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Tamaño pequeño y discreto
+@mixin boton-chico {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+// Botón oscuro / claro (el mismo de "Cambiar tema" y "Solicitar cotización")
+@mixin boton-tema {
+  @include boton($dark, $bg, $secondary);
+  @include boton-chico;
+  border-radius: 20px;
+}
+
+// Caja blanca de texto
+@mixin caja($padding: 20px) {
+  background: $white;
+  padding: $padding;
+  border-radius: 8px;
 }
 
 // ==========================================
@@ -61,6 +92,35 @@ body {
   background: $bg;
   color: $dark;
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+// Campos de formulario (contacto, búsqueda y cotizador)
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+  padding: 10px;
+  border: 2px solid $primary;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: $secondary;
+  }
+}
+
+// Estados de validación (una sola vez para toda la web)
+input, select, textarea {
+  &.error, &.error:focus {
+    border-color: red;
+  }
+
+  &.correcto, &.correcto:focus {
+    border-color: green;
+  }
 }
 
 // ==========================================
@@ -105,10 +165,7 @@ body {
 
   #btnTema {
     order: 2;
-    @include boton($dark, $bg, $secondary);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    @include boton-tema;
   }
 
   // BOTÓN HAMBURGUESA (3 rayitas)
@@ -195,7 +252,6 @@ body {
     margin-bottom: 20px;
 
     p {
-      color: $dark;
       font-size: 0.95rem;
       line-height: 1.5;
     }
@@ -214,11 +270,11 @@ body {
 
   // Tarjeta de foto (sirve para hero y para .cards)
   .card {
-    background: #ffffff;
+    background: $white;
     border: 3px solid $primary;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 3px 6px rgba(53, 77, 18, 0.1);
+    box-shadow: $shadow;
 
     &:hover {
       border-color: $secondary;
@@ -243,43 +299,46 @@ body {
       height: 220px;
     }
   }
-
-  // Cajas de texto blancas
-  .card-info, .item-experiencia {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-  }
-
-  .card-info {
-    border-left: 5px solid $secondary;
-    box-shadow: 0 3px 6px rgba(53, 77, 18, 0.1);
-
-    h3 {
-      color: $secondary;
-      margin-bottom: 8px;
-    }
-
-    p {
-      font-size: 0.92rem;
-      line-height: 1.5;
-    }
-  }
-
-  // Tarjetas de experiencia (clickeables, sin animaciones)
-  .item-experiencia {
-    cursor: pointer;
-    border: 1px solid $dark;
-
-    &:hover {
-      background: $primary;
-    }
-  }
 }
 
 // ==========================================
-// 7. FILTROS DE PROYECTOS
+// 7. CAJAS DE TEXTO Y FILTROS
 // ==========================================
+.card-info, .item-experiencia, .resumen {
+  @include caja;
+}
+
+// Cajas con borde magenta a la izquierda
+.card-info, .resumen {
+  border-left: 5px solid $secondary;
+  box-shadow: $shadow;
+
+  h3 {
+    margin-bottom: 8px;
+  }
+}
+
+.card-info {
+  h3 {
+    color: $secondary;
+  }
+
+  p {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+}
+
+// Tarjetas de experiencia (clickeables, sin animaciones)
+.item-experiencia {
+  cursor: pointer;
+  border: 1px solid $dark;
+
+  &:hover {
+    background: $primary;
+  }
+}
+
 .filtros {
   display: flex;
   flex-wrap: wrap;
@@ -288,9 +347,7 @@ body {
 
   button {
     @include boton($primary, $dark, $secondary);
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    @include boton-chico;
   }
 }
 
@@ -303,7 +360,7 @@ body {
 // 8. BOTÓN VOLVER ARRIBA
 // ==========================================
 #btnArriba {
-  @include boton($secondary, #ffffff, $dark);
+  @include boton($secondary, $white, $dark);
   display: none; // Controlado por JavaScript
   position: fixed;
   bottom: 25px;
@@ -334,9 +391,7 @@ body {
   z-index: 1000;
 
   .modal-contenido {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 4px;
+    @include caja(30px);
     border: 1px solid #333333;
     width: 90%;
     max-width: 450px;
@@ -354,76 +409,86 @@ body {
     }
 
     button {
-      background: #ffffff;
-      color: #000000;
+      @include boton($white, #000000, #e0e0e0, #000000);
+      @include boton-chico;
       border: 1px solid #333333;
-      padding: 6px 16px;
-      border-radius: 3px;
-      cursor: pointer;
-
-      &:hover {
-        background: #e0e0e0;
-      }
     }
   }
 }
 
-// ==========================================
-// 10. BÚSQUEDA DE HABILIDADES Y VALIDACIÓN
-// ==========================================
+// Sugerencias de la búsqueda de habilidades
 #sugerencias li {
   list-style: none;
   padding: 10px;
   cursor: pointer;
-  background: #ffffff;
-  color: $dark;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.error {
-  border: 2px solid red;
-}
-
-.correcto {
-  border: 2px solid green;
+  background: $white;
+  border-bottom: 1px solid $line;
 }
 
 // ==========================================
-// 11. COTIZADOR
+// 10. COTIZADOR
 // ==========================================
 .cotizador {
-  display: grid;
-  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 
   .campo {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
     margin-bottom: 15px;
 
-    label {
-      font-weight: 600;
+    // Etiquetas con letra normal
+    label, .etiqueta {
+      display: block;
+      font-weight: normal;
+      margin-bottom: 5px;
     }
 
-    input[type="text"], input[type="number"], select {
-      padding: 10px;
-      border: 2px solid $primary;
-      border-radius: 6px;
-      font-size: 1rem;
+    // Los campos de texto ocupan todo el ancho (las casillas no)
+    input:not([type="checkbox"]), select {
+      width: 100%;
+    }
 
-      // Resalta el campo que estás escribiendo
-      &:focus {
-        outline: none;
+    // Servicios: botones que se marcan y desmarcan (varios a la vez)
+    .servicios {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .servicio-item {
+      position: relative;
+      margin: 0;
+      cursor: pointer;
+
+      // La casilla queda escondida: el clic lo recibe la etiqueta
+      input {
+        position: absolute;
+        opacity: 0;
+      }
+
+      span {
+        display: block;
+        padding: 6px 14px;
+        border: 2px solid $primary;
+        border-radius: 20px;
+        background: $white;
+        font-size: 0.9rem;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      &:hover span {
         border-color: $secondary;
       }
 
-      // Feedback visual en tiempo real
-      &.error {
-        border-color: red;
+      // Servicio marcado
+      input:checked + span {
+        background: $secondary;
+        border-color: $secondary;
+        color: $white;
       }
 
-      &.correcto {
-        border-color: green;
+      // Se ve el foco al navegar con el teclado
+      input:focus-visible + span {
+        outline: 2px solid $dark;
       }
     }
   }
@@ -431,59 +496,19 @@ body {
   .mensaje {
     font-size: 0.85rem;
     min-height: 1.2em;
-  }
-
-  .ayuda {
-    font-size: 0.85rem;
-    margin-bottom: 15px;
-  }
-
-  // Cada servicio es una tarjeta clickeable
-  .servicio-item {
-    @include flex(flex-start, center, row);
-    gap: 10px;
-    background: #ffffff;
-    border: 2px solid $primary;
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 10px;
-    cursor: pointer;
-
-    span {
-      flex: 1;
-    }
-
-    // Clase que agrega JS al marcar el servicio
-    &.seleccionado {
-      border-color: $secondary;
-      background: $bg;
-    }
+    margin-top: 4px;
   }
 
   .resumen {
-    background: #ffffff;
-    border-left: 5px solid $secondary;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 15px;
-
-    h3 {
-      margin-bottom: 10px;
-    }
-
-    ul {
-      list-style: none;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-    }
+    margin: 20px 0;
   }
 
   .dato {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    padding: 10px 0;
-    border-bottom: 1px solid #eeeeee;
+    padding: 8px 0;
+    border-bottom: 1px solid $line;
     font-size: 0.9rem;
   }
 
@@ -493,35 +518,33 @@ body {
     color: $secondary;
   }
 
+  // Contenedor de los dos botones
   .botones {
     display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
     gap: 10px;
     margin-bottom: 10px;
-  }
 
-  #btnCotizar {
-    @include boton($secondary, #ffffff, $dark);
-    flex: 1;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 1rem;
-
-    // Desactivado hasta que todo sea válido
-    &:disabled {
-      background: #999999;
-      cursor: not-allowed;
+    // Mismo tamaño pequeño para los dos (padding, letra y bordes de 6px)
+    button {
+      @include boton-chico;
+      flex: none;
+      width: auto;
+      height: auto;
     }
   }
 
+  // Colores: solo cambia el color, el tamaño ya viene de arriba
+  #btnCotizar {
+    @include boton($dark, $bg, $secondary);
+  }
+
   .btn-limpiar {
-    @include boton(#edf0f4, $dark, $primary, $dark);
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 1rem;
+    @include boton($gray, $dark, $primary, $dark);
   }
 
   .exito {
-    margin-top: 10px;
     padding: 12px;
     border-radius: 6px;
     background: #e6f4ea;
@@ -531,7 +554,7 @@ body {
 }
 
 // ==========================================
-// 12. BREAKPOINTS
+// 11. BREAKPOINTS
 // ==========================================
 
 // TABLET (≥ 768px)
@@ -584,11 +607,6 @@ body {
       text-align: left;
     }
   }
-
-  // Cotizador en dos columnas
-  .cotizador {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 // DESKTOP (≥ 1024px)
@@ -616,7 +634,7 @@ body {
 }
 
 // ==========================================
-// 13. MODO OSCURO (todo en un solo lugar)
+// 12. MODO OSCURO (todo en un solo lugar)
 // ==========================================
 body.dark {
   background: $dark-bg;
@@ -639,53 +657,44 @@ body.dark {
     }
   }
 
-  #btnTema {
+  // Botón oscuro / claro: se invierte en modo oscuro
+  #btnTema, #btnCotizar {
     background: $bg;
     color: $dark-bg;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: $primary;
       color: $dark-bg;
     }
   }
 
-  .content {
-    background: $dark-bg;
+  // Campos de formulario
+  input, select, textarea {
+    background: $dark-card;
+    color: $bg;
+  }
 
-    .hero-text p {
-      color: $bg;
-    }
+  // Cajas y tarjetas
+  .card, .resumen, .item-experiencia, #sugerencias li {
+    background: $dark-card;
+    color: $bg;
+  }
 
-    .card {
-      background: $dark-card;
-      border-color: $secondary;
-    }
+  .card {
+    border-color: $secondary;
+  }
 
-    .card-info {
-      background: $secondary;
-      border-left-color: $primary;
+  .card-info {
+    background: $secondary;
+    border-left-color: $primary;
 
-      h3, p {
-        color: #ffffff;
-      }
-    }
-
-    .item-experiencia {
-      background: $dark-bg;
-      border-color: $accent;
-      color: $bg;
-
-      &:hover {
-        background: $accent;
-        color: $dark;
-      }
+    h3, p {
+      color: $white;
     }
   }
 
-  .filtros button {
-    background: $dark-card;
-    color: $bg;
-    border: 1px solid $accent;
+  .item-experiencia {
+    border-color: $accent;
 
     &:hover {
       background: $accent;
@@ -694,45 +703,34 @@ body.dark {
   }
 
   #sugerencias li {
-    background: $dark-card;
-    color: $bg;
     border-bottom-color: $dark;
   }
 
-  // Cotizador en modo oscuro
+  // Botones secundarios (filtros y limpiar) comparten el mismo estilo oscuro
+  .filtros button, .btn-limpiar {
+    background: $dark-card;
+    color: $bg;
+    border: 1px solid $accent;
+
+    &:hover:not(:disabled) {
+      background: $accent;
+      color: $dark;
+    }
+  }
+
+  // Servicios sin marcar en modo oscuro (los marcados siguen magenta)
+  .campo .servicio-item input:not(:checked) + span {
+    background: $dark-card;
+    color: $bg;
+  }
+
   .cotizador {
-    .campo input[type="text"],
-    .campo input[type="number"],
-    .campo select {
-      background: $dark-card;
-      color: $bg;
-    }
-
-    .servicio-item, .resumen {
-      background: $dark-card;
-      color: $bg;
-    }
-
-    .servicio-item.seleccionado {
-      background: $dark;
-    }
-
     .dato {
       border-bottom-color: $dark;
     }
 
     .dato.total {
       color: $primary;
-    }
-
-    .btn-limpiar {
-      background: $dark;
-      color: $bg;
-
-      &:hover {
-        background: $accent;
-        color: $dark;
-      }
     }
 
     .exito {
@@ -749,12 +747,12 @@ body.dark {
       border-color: $accent;
 
       h3, p {
-        color: #ffffff;
+        color: $white;
       }
 
       button {
         background: $dark;
-        color: #ffffff;
+        color: $white;
         border-color: $accent;
 
         &:hover {

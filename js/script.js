@@ -4,8 +4,21 @@
 
 document.addEventListener("DOMContentLoaded", function() {
 
+    // ------------------------------------------
+    // FUNCIÓN REUTILIZABLE: muestra un mensaje y
+    // pinta el campo en verde (ok) o rojo (error)
+    // ------------------------------------------
+    function mostrar(mensaje, campo, ok, texto) {
+        mensaje.textContent = texto;
+        mensaje.style.color = ok ? "green" : "red";
+
+        if (campo) {
+            campo.classList.toggle("correcto", ok);
+            campo.classList.toggle("error", !ok);
+        }
+    }
+
     // 1. MENÚ HAMBURGUESA
-      
     const hamburger = document.getElementById("hamburger");
     const nav = document.getElementById("nav");
 
@@ -47,8 +60,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const categoria = boton.dataset.categoria;
 
             itemsFiltro.forEach(function(item) {
-                const mostrar = categoria === "todos" || item.classList.contains(categoria);
-                item.classList.toggle("oculto", !mostrar);
+                const mostrarItem = categoria === "todos" || item.classList.contains(categoria);
+                item.classList.toggle("oculto", !mostrarItem);
             });
         });
     });
@@ -130,8 +143,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 7. VALIDACIÓN DEL FORMULARIO DE CONTACTO
-    // Una sola función para los tres campos
+    // 7. VALIDACIÓN DE CAMPOS (contacto y cotizador)
+    // Una sola función para nombre, correo, celular y mensaje
     function validar(idCampo, idMensaje, esValido, textoError, textoOk) {
         const campo = document.getElementById(idCampo);
         const mensaje = document.getElementById(idMensaje);
@@ -140,36 +153,38 @@ document.addEventListener("DOMContentLoaded", function() {
 
         campo.addEventListener("input", function() {
             const valido = esValido(campo.value);
-
-            mensaje.textContent = valido ? textoOk : textoError;
-            mensaje.style.color = valido ? "green" : "red";
-            campo.classList.toggle("correcto", valido);
-            campo.classList.toggle("error", !valido);
+            mostrar(mensaje, campo, valido, valido ? textoOk : textoError);
         });
     }
 
     validar("nombre", "mensajeNombre",
-        function(v) { return v.length >= 3; },
+        function(v) { return v.trim().length >= 3; },
         "El nombre debe tener al menos 3 caracteres",
         "Nombre válido");
 
     validar("email", "mensajeEmail",
         function(v) { return v.includes("@") && v.includes("."); },
-        "Ingresa un correo electrónico válido",
+        "Ingresa un correo válido, por ejemplo correo@gmail.com",
         "Correo válido");
+
+    // Celular de Bolivia: 8 dígitos y empieza con 6 o 7
+    validar("telefono", "mensajeTelefono",
+        function(v) { return /^[67]\d{7}$/.test(v); },
+        "El celular debe tener 8 dígitos y empezar con 6 o 7",
+        "Celular válido");
 
     validar("mensajeTexto", "mensajeTextoFeedback",
         function(v) { return v.length >= 5; },
         "El mensaje debe tener al menos 5 caracteres",
         "Mensaje válido");
 
-});
     // 8. COTIZADOR
     const formCotizador = document.getElementById("formCotizador");
 
     if (formCotizador) {
         const nombreInput = document.getElementById("nombre");
         const emailInput = document.getElementById("email");
+        const telefonoInput = document.getElementById("telefono");
         const servicios = document.querySelectorAll(".servicio");
         const cantidadInput = document.getElementById("cantidad");
         const plazoInput = document.getElementById("plazo");
@@ -177,93 +192,82 @@ document.addEventListener("DOMContentLoaded", function() {
         const mensajeServicios = document.getElementById("mensajeServicios");
         const mensajeCantidad = document.getElementById("mensajeCantidad");
         const mensajeBoton = document.getElementById("mensajeBoton");
+        const mensajeFinal = document.getElementById("mensajeFinal");
 
-        const listaResumen = document.getElementById("listaResumen");
         const subtotalResultado = document.getElementById("subtotal");
         const recargoResultado = document.getElementById("recargo");
         const descuentoResultado = document.getElementById("descuento");
         const totalResultado = document.getElementById("total");
 
         const boton = document.getElementById("btnCotizar");
-        const resultado = document.getElementById("resultado");
 
-        // ---------- VALIDACIONES ----------
-        function cantidadServicios() {
-            return Array.from(servicios).filter(function(s) { return s.checked; }).length;
+        // ---------- VALIDACIONES (solo dicen si está bien o mal) ----------
+        function nombreValido() {
+            return nombreInput.value.trim().length >= 3;
         }
 
-        function esCantidadValida() {
+        function emailValido() {
+            return emailInput.value.includes("@") && emailInput.value.includes(".");
+        }
+
+        function telefonoValido() {
+            return /^[67]\d{7}$/.test(telefonoInput.value);
+        }
+
+        // Lista de servicios que el usuario marcó
+        function serviciosElegidos() {
+            return Array.from(servicios).filter(function(s) { return s.checked; });
+        }
+
+        function cantidadValida() {
             const cantidad = Number(cantidadInput.value);
             return cantidadInput.value !== "" && Number.isInteger(cantidad) && cantidad >= 1 && cantidad <= 10;
         }
 
+        // ---------- MENSAJES ----------
         function mostrarServicios() {
-            const total = cantidadServicios();
+            const elegidos = serviciosElegidos();
+            const nombres = elegidos.map(function(s) { return s.dataset.nombre; });
+            const texto = elegidos.length === 0 ? "Selecciona al menos un servicio" : `Seleccionados: ${nombres.join(", ")}`;
 
-            if (total === 0) {
-                mensajeServicios.textContent = "Selecciona al menos un servicio";
-                mensajeServicios.style.color = "red";
-            } else {
-                mensajeServicios.textContent = `${total} servicio(s) seleccionado(s)`;
-                mensajeServicios.style.color = "green";
-            }
+            mostrar(mensajeServicios, null, elegidos.length > 0, texto);
         }
 
         function mostrarCantidad() {
             const cantidad = Number(cantidadInput.value);
-            let error = "";
+            let texto;
 
             if (cantidadInput.value === "") {
-                error = "Ingresa la cantidad de proyectos";
+                texto = "Escribe la cantidad de proyectos";
             } else if (!Number.isInteger(cantidad)) {
-                error = "La cantidad debe ser un número entero";
+                texto = "La cantidad debe ser un número entero";
             } else if (cantidad < 1 || cantidad > 10) {
-                error = "La cantidad debe estar entre 1 y 10";
+                texto = "La cantidad debe estar entre 1 y 10";
+            } else {
+                texto = "Cantidad válida";
             }
 
-            const ok = error === "";
-
-            mensajeCantidad.textContent = ok ? "Cantidad válida" : error;
-            mensajeCantidad.style.color = ok ? "green" : "red";
-            cantidadInput.classList.toggle("correcto", ok);
-            cantidadInput.classList.toggle("error", !ok);
+            mostrar(mensajeCantidad, cantidadInput, cantidadValida(), texto);
         }
 
         // El botón solo se activa si todo es válido
         function actualizarBoton() {
-            const nombreOk = nombreInput.value.length >= 3;
-            const emailOk = emailInput.value.includes("@") && emailInput.value.includes(".");
-            const todoOk = nombreOk && emailOk && cantidadServicios() > 0 && esCantidadValida();
+            const todoOk = nombreValido() && emailValido() && telefonoValido() && serviciosElegidos().length > 0 && cantidadValida();
 
             boton.disabled = !todoOk;
-            mensajeBoton.textContent = todoOk ? "Todo listo, ya puedes enviar" : "Completa todos los campos para continuar";
-            mensajeBoton.style.color = todoOk ? "green" : "red";
+            mostrar(mensajeBoton, null, todoOk, todoOk ? "Todo listo, ya puedes enviar" : "Completa todos los campos para continuar");
         }
 
         // ---------- CÁLCULO ----------
         function calcular() {
+            // Suma el precio de todos los servicios marcados
             let precioProyecto = 0;
-            listaResumen.innerHTML = "";
 
-            servicios.forEach(function(s) {
-                s.closest("label").classList.toggle("seleccionado", s.checked);
-
-                if (s.checked) {
-                    precioProyecto += Number(s.value);
-
-                    const li = document.createElement("li");
-                    li.textContent = `${s.dataset.nombre} — Bs ${s.value}`;
-                    listaResumen.appendChild(li);
-                }
+            serviciosElegidos().forEach(function(s) {
+                precioProyecto += Number(s.value);
             });
 
-            if (precioProyecto === 0) {
-                const li = document.createElement("li");
-                li.textContent = "Aún no seleccionas servicios";
-                listaResumen.appendChild(li);
-            }
-
-            const cantidad = esCantidadValida() ? Number(cantidadInput.value) : 0;
+            const cantidad = cantidadValida() ? Number(cantidadInput.value) : 0;
             const plazo = plazoInput.value;
 
             let recargo;
@@ -303,6 +307,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         // ---------- EVENTOS (tiempo real) ----------
+        // Los mensajes de nombre, correo y celular los maneja "validar"
+        nombreInput.addEventListener("input", actualizarBoton);
+        emailInput.addEventListener("input", actualizarBoton);
+        telefonoInput.addEventListener("input", actualizarBoton);
+
+        // Cada vez que marcas o desmarcas un servicio
         servicios.forEach(function(s) {
             s.addEventListener("change", function() {
                 mostrarServicios();
@@ -318,14 +328,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         plazoInput.addEventListener("change", calcular);
-        nombreInput.addEventListener("input", actualizarBoton);
-        emailInput.addEventListener("input", actualizarBoton);
 
-        // ---------- ENVIAR ----------
-        formCotizador.addEventListener("submit", function(e) {
-            e.preventDefault();
-            resultado.textContent = `¡Gracias ${nombreInput.value}! Tu cotización de ${totalResultado.textContent} fue enviada a ${emailInput.value}`;
-            resultado.className = "exito";
+        // ---------- SOLICITAR ----------
+        boton.addEventListener("click", function() {
+            mensajeFinal.textContent = `¡Gracias ${nombreInput.value}! Tu cotización de ${totalResultado.textContent} será enviada a ${emailInput.value} y te llamaremos al ${telefonoInput.value}.`;
+            mensajeFinal.className = "exito";
         });
 
         // ---------- LIMPIAR ----------
@@ -338,13 +345,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelectorAll(".cotizador .error, .cotizador .correcto").forEach(function(campo) {
                     campo.classList.remove("error", "correcto");
                 });
-                resultado.textContent = "";
-                resultado.className = "";
+                mensajeFinal.textContent = "";
+                mensajeFinal.className = "";
 
                 calcular();
                 actualizarBoton();
             }, 0);
         });
-
-        calcular(); // Estado inicial
     }
+
+});
